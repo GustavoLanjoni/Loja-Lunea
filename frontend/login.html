@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Login Admin | Lunea</title>
+
+    <link rel="stylesheet" href="css/login.css" />
+</head>
+
+<body>
+
+    <main class="login-page">
+        <section class="login-card">
+            <div class="brand">
+                <h1>Lunea</h1>
+                <p>Acesse o painel administrativo</p>
+            </div>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label>E-mail</label>
+                    <input type="email" id="email" placeholder="digite seu e-mail" required />
+                </div>
+
+                <div class="form-group">
+                    <label>Senha</label>
+                    <input type="password" id="senha" placeholder="Digite sua senha" required />
+                </div>
+
+                <button type="submit">Entrar</button>
+            </form>
+
+            <a href="lunea.html" class="back-link">Voltar para loja</a>
+        </section>
+    </main>
+
+    <div class="toast" id="toast"></div>
+
+    <script src="js/login.js"></script>
+</body>
+
+</html>

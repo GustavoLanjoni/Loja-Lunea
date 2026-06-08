@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produtos | Lunea</title>
+
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+
+<body>
+
+    <aside class="sidebar">
+        <div class="brand">
+            <h1>Lunea</h1>
+            <span>Painel Admin</span>
+        </div>
+
+        <nav class="menu">
+            <a href="/admin">Dashboard</a>
+            <a href="/admin-produtos" class="active">Produtos</a>
+            <a href="#">Pedidos</a>
+            <a href="/lunea.html">Ver Loja</a>
+        </nav>
+    </aside>
+
+    <main class="main">
+
+        <header class="topbar">
+            <div>
+                <h2>Produtos</h2>
+                <p>Gerencie todos os produtos cadastrados.</p>
+            </div>
+
+        </header>
+
+        <section class="panel">
+
+            <div class="panel-header">
+                <div>
+                    <h3>Produtos Cadastrados</h3>
+                    <p>Pesquise, edite ou exclua produtos.</p>
+                </div>
+            </div>
+
+            <div class="filtros-produtos">
+                <input type="text" id="buscarProduto" placeholder="Pesquisar produto...">
+
+                <select id="filtroCategoria">
+                    <option value="">Todas categorias</option>
+                </select>
+            </div>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Produto</th>
+                            <th>Categoria</th>
+                            <th>Preço</th>
+                            <th>Estoque</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="tabelaProdutos"></tbody>
+                </table>
+            </div>
+
+        </section>
+
+    </main>
+
+    <div class="toast" id="toast"></div>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <h3>Excluir produto?</h3>
+            <p>Essa ação não poderá ser desfeita.</p>
+
+            <div class="modal-actions">
+                <button id="cancelarExclusao" class="btn-secondary">
+                    Cancelar
+                </button>
+
+                <button id="confirmarExclusao" class="btn-danger">
+                    Excluir
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="image-viewer" id="imageViewer">
+        <div class="image-viewer-content">
+
+            <button class="close-viewer" id="closeViewer">
+                ✕
+            </button>
+
+            <img id="viewerMainImage" src="" alt="Produto">
+
+            <div class="viewer-thumbnails" id="viewerThumbnails"></div>
+
+        </div>
+    </div>
+
+    <script src="js/admin-produtos.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Admin | Lunea</title>
+
+    <link rel="stylesheet" href="css/admin.css" />
+</head>
+
+<body>
+
+    <aside class="sidebar">
+        <div class="brand">
+            <h1>Lunea</h1>
+            <span>Painel Admin</span>
+        </div>
+
+        <nav class="menu">
+            <a href="/admin" class="active">Dashboard</a>
+            <a href="/admin-produtos">Produtos</a>
+            <a href="#categorias">Categorias</a>
+            <a href="/lunea.html">Ver loja</a>
+        </nav>
+    </aside>
+
+    <main class="main">
+        <header class="topbar">
+            <div>
+                <h2>Dashboard</h2>
+                <p>Gerencie sua loja de forma simples e profissional.</p>
+            </div>
+        </header>
+
+        <section class="cards">
+            <div class="card">
+                <span>Total de Produtos</span>
+                <strong id="totalProdutos">0</strong>
+            </div>
+
+            <div class="card">
+                <span>Categorias</span>
+                <strong id="totalCategorias">0</strong>
+            </div>
+
+            <div class="card">
+                <span>Estoque Baixo</span>
+                <strong id="estoqueBaixo">0</strong>
+            </div>
+
+            <div class="card">
+                <span>Vendas</span>
+                <strong>R$ 0,00</strong>
+            </div>
+        </section>
+
+        <section class="dashboard-lists">
+            <div class="dashboard-box">
+                <h3>Últimos Produtos</h3>
+                <div id="ultimosProdutos" class="dashboard-list"></div>
+            </div>
+
+            <div class="dashboard-box">
+                <h3>Produtos Mais Caros</h3>
+                <div id="produtosMaisCaros" class="dashboard-list"></div>
+            </div>
+        </section>
+
+        <section class="panel" id="produtos">
+            <div class="panel-header">
+                <div>
+                    <h3>Cadastrar Produto</h3>
+                    <p>Adicione produtos que aparecerão na loja Lunea.</p>
+                </div>
+            </div>
+
+            <div class="admin-product-layout">
+                <form id="produtoForm" class="form">
+                    <input type="hidden" id="produtoId" />
+
+                    <div class="form-group">
+                        <label>Nome do produto</label>
+                        <input type="text" id="nome" placeholder="Ex: Bolsa Lunea Premium" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Descrição</label>
+                        <textarea id="descricao" placeholder="Descreva o produto..." required></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Preço</label>
+                            <input type="number" id="preco" step="0.01" placeholder="79.90" required />
+                        </div>
+
+                        <div class="form-group">
+                            <label>Estoque</label>
+                            <input type="number" id="estoque" placeholder="10" required />
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Categoria</label>
+                            <select id="categoria_id" required>
+                                <option value="">Carregando categorias...</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Imagens do produto</label>
+                            <input type="file" id="imagens" multiple accept="image/*" required />
+                            <small>Você pode selecionar até 5 imagens.</small>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary" id="btnSalvar">
+                            Cadastrar Produto
+                        </button>
+
+                        <button type="button" class="btn-secondary" id="btnCancelar">
+                            Cancelar
+                        </button>
+                    </div>
+                </form>
+
+                <aside class="product-preview">
+                    <div class="preview-label">Prévia do produto</div>
+
+                    <div class="preview-image-box">
+                        <img id="previewImagem" src="" alt="Preview do produto">
+                    </div>
+
+                    <div class="preview-gallery" id="previewGaleria"></div>
+
+                    <div class="preview-content">
+                        <span id="previewCategoria">Categoria</span>
+                        <h4 id="previewNome">Nome do produto</h4>
+                        <p id="previewDescricao">Descrição do produto aparecerá aqui.</p>
+                        <strong id="previewPreco">R$ 0,00</strong>
+                    </div>
+                </aside>
+            </div>
+        </section>
+
+        <section class="panel" id="categorias">
+            <div class="panel-header">
+                <div>
+                    <h3>Categorias</h3>
+                    <p>Cadastre e gerencie categorias da loja.</p>
+                </div>
+            </div>
+
+            <form id="categoriaForm" class="category-form">
+                <div class="form-group">
+                    <label>Nome da categoria</label>
+                    <input type="text" id="nomeCategoria" placeholder="Ex: Bolsas" required />
+                </div>
+
+                <button type="submit" class="btn-primary">
+                    Adicionar Categoria
+                </button>
+            </form>
+
+            <div class="category-list" id="listaCategorias"></div>
+        </section>
+    </main>
+
+    <div class="toast" id="toast"></div>
+
+    <script src="js/admin.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Lunea | Loja Online</title>
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+
+  <header class="header">
+    <div class="logo">Lunea</div>
+
+    <nav class="nav">
+      <a href="#inicio">Início</a>
+      <a href="#produtos">Produtos</a>
+      <a href="#sobre">Sobre</a>
+      <a href="#contato">Contato</a>
+    </nav>
+
+    <button class="cart-button" id="abrirCarrinho">
+      Carrinho <span id="cartCount">0</span>
+    </button>
+  </header>
+
+  <section class="hero" id="inicio">
+    <div class="hero-content">
+      <span class="hero-badge">
+        🌿 Produtos selecionados com carinho
+      </span>
+
+      <h1>
+        Elegância, cuidado e estilo para o seu dia a dia.
+      </h1>
+
+      <p>
+        A Lunea nasceu para oferecer produtos escolhidos com atenção,
+        beleza e propósito. Uma experiência simples, acolhedora e confiável.
+      </p>
+
+      <div class="hero-actions">
+        <a href="#produtos" class="btn-primary">
+          Ver produtos
+        </a>
+
+        <a href="#sobre" class="btn-secondary-hero">
+          Conhecer a Lunea
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-info-card">
+      <div class="info-item">
+        <strong>✓ Compra fácil</strong>
+        <span>Finalize seu pedido direto pelo WhatsApp.</span>
+      </div>
+
+      <div class="info-item">
+        <strong>✓ Atendimento humano</strong>
+        <span>Suporte rápido, próximo e personalizado.</span>
+      </div>
+
+      <div class="info-item">
+        <strong>✓ Produtos selecionados</strong>
+        <span>Escolhas feitas com cuidado em cada detalhe.</span>
+      </div>
+    </div>
+  </section>
+
+  <main>
+
+    <section class="benefits">
+      <div class="benefit-card">
+        <div class="benefit-icon">🚚</div>
+        <h3>Entrega Rápida</h3>
+        <p>Receba seus produtos com segurança e praticidade.</p>
+      </div>
+
+      <div class="benefit-card">
+        <div class="benefit-icon">💬</div>
+        <h3>Atendimento Próximo</h3>
+        <p>Fale diretamente conosco pelo WhatsApp sempre que precisar.</p>
+      </div>
+
+      <div class="benefit-card">
+        <div class="benefit-icon">🌿</div>
+        <h3>Produtos Selecionados</h3>
+        <p>Cada item é escolhido com carinho e atenção aos detalhes.</p>
+      </div>
+    </section>
+
+    <section class="trust-bar">
+      <div>✓ Compra segura</div>
+      <div>✓ Atendimento personalizado</div>
+      <div>✓ Produtos de qualidade</div>
+    </section>
+
+    <section class="section-products" id="produtos">
+      <div class="section-title">
+        <span>Loja</span>
+        <h2>Produtos em destaque</h2>
+        <p>Confira os produtos disponíveis na Lunea.</p>
+      </div>
+
+      <div class="filters-store">
+        <input
+          type="text"
+          id="buscarProdutoLoja"
+          placeholder="Buscar produto..."
+        />
+
+        <select id="filtroCategoriaLoja">
+          <option value="">Todas categorias</option>
+        </select>
+      </div>
+
+      <div class="products-grid" id="productsGrid"></div>
+    </section>
+
+    <section class="about-section" id="sobre">
+      <div class="about-text">
+        <span>Sobre nós</span>
+
+        <h2>
+          A Lunea é uma loja criada com cuidado, propósito e carinho.
+        </h2>
+
+        <p>
+          Nossa missão é oferecer produtos que unem beleza, praticidade e
+          confiança. Cada item é escolhido pensando em quem busca uma compra
+          simples, acolhedora e especial.
+        </p>
+
+        <p>
+          Mais do que vender produtos, queremos entregar uma experiência próxima,
+          humana e feita com atenção aos detalhes.
+        </p>
+      </div>
+
+      <div class="about-card">
+        <strong>Lunea</strong>
+        <p>
+          Uma loja feita para quem valoriza cuidado, beleza e boas escolhas.
+        </p>
+      </div>
+    </section>
+
+    <section class="contact-section" id="contato">
+      <span>Contato</span>
+
+      <h2>Precisa de ajuda para escolher?</h2>
+
+      <p>
+        Chame a Lunea no WhatsApp e tire suas dúvidas antes de comprar.
+      </p>
+
+      <a href="https://wa.me/5517996489436" target="_blank">
+        Chamar no WhatsApp
+      </a>
+    </section>
+
+  </main>
+
+  <aside class="cart-drawer" id="cartDrawer">
+    <div class="cart-header">
+      <h3>Meu carrinho</h3>
+      <button id="fecharCarrinho">×</button>
+    </div>
+
+    <div class="cart-items" id="cartItems"></div>
+
+    <div class="cart-footer">
+      <p>Total: <strong id="cartTotal">R$ 0,00</strong></p>
+      <button id="finalizarPedido">
+        Finalizar pelo WhatsApp
+      </button>
+    </div>
+  </aside>
+
+  <div class="overlay" id="overlay"></div>
+
+  <div class="toast" id="toast"></div>
+
+  <a
+    href="https://wa.me/5517996489436"
+    class="whatsapp-float"
+    target="_blank"
+  >
+    💬
+  </a>
+
+  <footer class="footer">
+    <div>
+      <strong>Lunea</strong>
+      <p>Produtos escolhidos com carinho para você.</p>
+    </div>
+
+    <p>© 2026 Lunea. Todos os direitos reservados.</p>
+  </footer>
+
+  <script src="js/script.js"></script>
+</body>
+
+</html>
