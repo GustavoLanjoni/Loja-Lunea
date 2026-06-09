@@ -11,39 +11,90 @@ const cartTotal = document.getElementById("cartTotal");
 const finalizarPedido = document.getElementById("finalizarPedido");
 const toast = document.getElementById("toast");
 
+const searchInput = document.querySelector(".search-box input");
+
 let carrinho = [];
+let produtosLoja = [];
 
 async function carregarProdutos() {
   try {
     const resposta = await fetch(API_URL);
     const produtos = await resposta.json();
 
-    productsGrid.innerHTML = "";
+    produtosLoja = produtos.filter((produto) => produto.ativo);
 
-    produtos.forEach((produto) => {
-      if (!produto.ativo) return;
-
-      const card = document.createElement("div");
-      card.className = "product-card";
-
-      card.innerHTML = `
-        <img src="${produto.imagem || "https://via.placeholder.com/400x300"}" alt="${produto.nome}">
-        <div class="product-info">
-          <h3>${produto.nome}</h3>
-          <p>${produto.descricao || "Produto Lunea"}</p>
-          <div class="product-price">R$ ${Number(produto.preco).toFixed(2).replace(".", ",")}</div>
-          <button onclick="adicionarAoCarrinho(${produto.id}, '${produto.nome}', ${produto.preco})">
-            Adicionar ao carrinho
-          </button>
-        </div>
-      `;
-
-      productsGrid.appendChild(card);
-    });
+    renderizarProdutos(produtosLoja);
   } catch (error) {
     mostrarToast("Erro ao carregar produtos");
     console.error(error);
   }
+}
+
+function renderizarProdutos(listaProdutos) {
+  productsGrid.innerHTML = "";
+
+  if (listaProdutos.length === 0) {
+    productsGrid.innerHTML = `
+      <div class="empty-products">
+        Nenhum produto encontrado.
+      </div>
+    `;
+    return;
+  }
+
+  listaProdutos.forEach((produto) => {
+    const imagemPrincipal =
+      produto.imagens && produto.imagens.length > 0
+        ? produto.imagens[0].imagem_url
+        : produto.imagem || "https://via.placeholder.com/400x300";
+
+    const card = document.createElement("div");
+    card.className = "product-card";
+
+    card.innerHTML = `
+      <img src="${imagemPrincipal}" alt="${produto.nome}">
+
+      <div class="product-info">
+        <span class="product-category">
+          ${produto.categoria_nome || "Lunea"}
+        </span>
+
+        <h3>${produto.nome}</h3>
+
+        <p>${produto.descricao || "Produto Lunea"}</p>
+
+        <div class="product-price">
+          R$ ${Number(produto.preco).toFixed(2).replace(".", ",")}
+        </div>
+
+        <div class="product-actions">
+          <button onclick="adicionarAoCarrinho(${produto.id}, '${produto.nome.replace(/'/g, "\\'")}', ${produto.preco})">
+            Adicionar ao carrinho
+          </button>
+        </div>
+      </div>
+    `;
+
+    productsGrid.appendChild(card);
+  });
+}
+
+function filtrarProdutos() {
+  const termo = searchInput.value.trim().toLowerCase();
+
+  const produtosFiltrados = produtosLoja.filter((produto) => {
+    const nome = String(produto.nome || "").toLowerCase();
+    const descricao = String(produto.descricao || "").toLowerCase();
+    const categoria = String(produto.categoria_nome || "").toLowerCase();
+
+    return (
+      nome.includes(termo) ||
+      descricao.includes(termo) ||
+      categoria.includes(termo)
+    );
+  });
+
+  renderizarProdutos(produtosFiltrados);
 }
 
 function adicionarAoCarrinho(id, nome, preco) {
@@ -121,7 +172,10 @@ function finalizarPeloWhatsApp() {
       .replace(".", ",")}%0A`;
   });
 
-  const total = carrinho.reduce((soma, item) => soma + item.preco * item.quantidade, 0);
+  const total = carrinho.reduce(
+    (soma, item) => soma + item.preco * item.quantidade,
+    0
+  );
 
   mensagem += `%0ATotal: R$ ${total.toFixed(2).replace(".", ",")}`;
 
@@ -142,5 +196,9 @@ abrirCarrinho.addEventListener("click", abrirMenuCarrinho);
 fecharCarrinho.addEventListener("click", fecharMenuCarrinho);
 overlay.addEventListener("click", fecharMenuCarrinho);
 finalizarPedido.addEventListener("click", finalizarPeloWhatsApp);
+
+if (searchInput) {
+  searchInput.addEventListener("input", filtrarProdutos);
+}
 
 carregarProdutos();
