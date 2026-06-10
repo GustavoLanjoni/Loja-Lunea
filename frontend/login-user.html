@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Entrar | Lunea</title>
+
+  <link rel="stylesheet" href="css/auth-user.css">
+</head>
+<body>
+
+  <main class="auth-page">
+
+    <section class="auth-card">
+
+      <a href="/" class="auth-logo">Lunea</a>
+
+      <div class="auth-header">
+        <span>Acesse sua conta</span>
+        <h1>Entrar</h1>
+        <p>Entre para acessar seu perfil e acompanhar seus pedidos.</p>
+      </div>
+
+      <form id="loginForm" class="auth-form">
+
+        <div class="form-group">
+          <label>E-mail</label>
+          <input type="email" id="email" required>
+        </div>
+
+        <div class="form-group">
+          <label>Senha</label>
+          <input type="password" id="senha" required>
+        </div>
+
+        <button type="submit">Entrar</button>
+
+      </form>
+
+      <p class="auth-link">
+        Ainda não tem conta?
+        <a href="cadastro-user.html">Criar conta</a>
+      </p>
+
+    </section>
+
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="js/auth-user.js"></script>
+</body>
+</html>

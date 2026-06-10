@@ -201,4 +201,31 @@ if (searchInput) {
   searchInput.addEventListener("input", filtrarProdutos);
 }
 
+
+async function verificarSessao() {
+  try {
+    const resposta = await fetch(
+      "http://localhost:3000/usuarios/sessao",
+      {
+        credentials: "include"
+      }
+    );
+
+    const userButton =
+      document.getElementById("userButton");
+
+    if (!userButton) return;
+
+    if (resposta.ok) {
+      userButton.href = "/perfil";
+    } else {
+      userButton.href = "/entrar";
+    }
+
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 carregarProdutos();
+verificarSessao();
