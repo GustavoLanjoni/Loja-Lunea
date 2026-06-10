@@ -11,6 +11,38 @@ const nome = document.getElementById("nome");
 const email = document.getElementById("email");
 const telefone = document.getElementById("telefone");
 
+
+cep.addEventListener("blur", buscarEnderecoPorCep);
+
+async function buscarEnderecoPorCep() {
+  const cepDigitado = cep.value.replace(/\D/g, "");
+
+  if (cepDigitado.length !== 8) {
+    mostrarToast("Digite um CEP válido");
+    return;
+  }
+
+  try {
+    const resposta = await fetch(`https://viacep.com.br/ws/${cepDigitado}/json/`);
+    const dados = await resposta.json();
+
+    if (dados.erro) {
+      mostrarToast("CEP não encontrado");
+      return;
+    }
+
+    rua.value = dados.logradouro || "";
+    bairro.value = dados.bairro || "";
+    cidade.value = dados.localidade || "";
+    estado.value = dados.uf || "";
+
+    mostrarToast("Endereço preenchido automaticamente");
+  } catch (error) {
+    console.error(error);
+    mostrarToast("Erro ao buscar CEP");
+  }
+}
+
 function mostrarToast(mensagem) {
   toast.textContent = mensagem;
   toast.classList.add("active");

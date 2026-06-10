@@ -207,16 +207,31 @@ router.get("/perfil", autenticarUsuario, async (req, res) => {
 router.put("/perfil", autenticarUsuario, async (req, res) => {
   try {
     const usuarioLogado = (req as any).usuario;
-    const { nome, telefone } = req.body;
+    const {
+      nome,
+      telefone,
+      cep,
+      rua,
+      numero,
+      bairro,
+      cidade,
+      estado
+    } = req.body;
 
     const { data, error } = await supabase
       .from("usuarios")
       .update({
         nome,
         telefone,
+        cep,
+        rua,
+        numero,
+        bairro,
+        cidade,
+        estado
       })
       .eq("id", usuarioLogado.id)
-      .select("id, nome, email, telefone, cargo, ativo, criado_em")
+      .select("id, nome, email, telefone, cep, rua, numero, bairro, cidade, estado, cargo, ativo, criado_em")
       .single();
 
     if (error) throw error;

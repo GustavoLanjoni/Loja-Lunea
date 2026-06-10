@@ -4,6 +4,7 @@ const cadastroForm = document.getElementById("cadastroForm");
 const loginForm = document.getElementById("loginForm");
 const toast = document.getElementById("toast");
 
+
 function mostrarToast(mensagem) {
   toast.textContent = mensagem;
   toast.classList.add("active");
@@ -24,6 +25,11 @@ if (cadastroForm) {
 
     if (!nome || !email || !senha) {
       mostrarToast("Preencha nome, e-mail e senha");
+      return;
+    }
+
+    if (senha.length < 6) {
+      mostrarToast("A senha precisa ter pelo menos 6 caracteres");
       return;
     }
 
@@ -54,6 +60,7 @@ if (cadastroForm) {
       setTimeout(() => {
         window.location.href = "/entrar";
       }, 1200);
+
     } catch (error) {
       console.error(error);
       mostrarToast("Erro ao conectar com o servidor");
@@ -96,8 +103,9 @@ if (loginForm) {
       mostrarToast("Login realizado com sucesso");
 
       setTimeout(() => {
-        window.location.href = "/lunea.html";
+        window.location.href = "/perfil";
       }, 1200);
+
     } catch (error) {
       console.error(error);
       mostrarToast("Erro ao conectar com o servidor");
