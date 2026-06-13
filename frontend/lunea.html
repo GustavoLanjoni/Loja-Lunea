@@ -15,6 +15,11 @@
 <body>
 
   <header class="header">
+
+    <button class="menu-button" id="menuButton" aria-label="Abrir menu">
+      <i data-lucide="menu"></i>
+    </button>
+
     <a href="#inicio" class="logo">Lunea</a>
 
     <div class="search-box">
@@ -31,17 +36,55 @@
 
     <div class="header-actions">
 
-      <a href="/entrar" class="user-button" id="userButton">
+      <button class="search-mobile-button" id="searchMobileButton" aria-label="Buscar">
+        <i data-lucide="search"></i>
+      </button>
+
+      <a href="/entrar" class="user-button" id="userButton" aria-label="Minha conta">
         <i data-lucide="user"></i>
       </a>
 
-      <button class="cart-button" id="abrirCarrinho">
+      <button class="cart-button" id="abrirCarrinho" aria-label="Abrir carrinho">
         <i data-lucide="shopping-bag"></i>
         <span id="cartCount">0</span>
       </button>
 
     </div>
+
   </header>
+
+  <div class="mobile-search-panel" id="mobileSearchPanel">
+    <div class="mobile-search-box">
+      <input type="text" id="mobileSearchInput" placeholder="Pesquisar">
+
+      <button id="mobileSearchSubmit" type="button">
+        <i data-lucide="search"></i>
+      </button>
+    </div>
+
+    <button class="mobile-search-close" id="mobileSearchClose" type="button">
+      <i data-lucide="x"></i>
+    </button>
+  </div>
+
+  <aside class="mobile-side-menu" id="mobileSideMenu">
+    <div class="mobile-menu-header">
+      <strong>Lunea</strong>
+
+      <button id="closeMobileMenu" aria-label="Fechar menu">
+        <i data-lucide="x"></i>
+      </button>
+    </div>
+
+    <nav class="mobile-menu-links">
+      <a href="#inicio">Início</a>
+      <a href="#produtos">Coleção</a>
+      <a href="#sobre">Sobre</a>
+      <a href="#contato">Contato</a>
+    </nav>
+  </aside>
+
+  <div class="menu-overlay" id="menuOverlay"></div>
 
   <div class="top-announcement">
     <div class="announcement-track">
@@ -92,7 +135,29 @@
     </div>
   </section>
 
+  <section class="brand-strip">
+    <span>Produtos Selecionados | Qualidade e Delicadeza</span>
+  </section>
+
   <main>
+
+
+    <section class="collection-layout" id="produtos">
+      <div class="collection-intro">
+        <span>Coleção</span>
+        <h2>Descubra produtos escolhidos para você.</h2>
+      </div>
+
+      <div class="filters-store">
+        <input type="text" id="buscarProdutoLoja" placeholder="Buscar produto..." />
+
+        <select id="filtroCategoriaLoja">
+          <option value="">Todas categorias</option>
+        </select>
+      </div>
+
+      <div class="products-grid editorial-grid" id="productsGrid"></div>
+    </section>
 
     <section class="split-benefits">
       <div class="split-title">
@@ -121,22 +186,7 @@
       </div>
     </section>
 
-    <section class="collection-layout" id="produtos">
-      <div class="collection-intro">
-        <span>Coleção</span>
-        <h2>Descubra produtos escolhidos para você.</h2>
-      </div>
 
-      <div class="filters-store">
-        <input type="text" id="buscarProdutoLoja" placeholder="Buscar produto..." />
-
-        <select id="filtroCategoriaLoja">
-          <option value="">Todas categorias</option>
-        </select>
-      </div>
-
-      <div class="products-grid editorial-grid" id="productsGrid"></div>
-    </section>
 
     <section class="brand-story" id="sobre">
       <div class="story-card">

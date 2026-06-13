@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 import produtosRoutes from "./routes/produtos.routes";
 import categoriasRoutes from "./routes/categorias.routes";
 import usuariosRoutes from "./routes/usuarios.routes";
+import favoritosRoutes from "./routes/favoritos.routes";
 
 dotenv.config();
 
@@ -25,6 +26,7 @@ app.use(express.static(path.join(__dirname, "../../frontend")));
 app.use("/produtos", produtosRoutes);
 app.use("/categorias", categoriasRoutes);
 app.use("/usuarios", usuariosRoutes);
+app.use("/favoritos", favoritosRoutes);
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "../../frontend/lunea.html"));
@@ -56,6 +58,10 @@ app.get("/cadastro", (req, res) => {
 
 app.get("/entrar", (req, res) => {
   res.sendFile(path.join(__dirname, "../../frontend/login-user.html"));
+});
+
+app.get("/produto", (req, res) => {
+  res.sendFile(path.join(__dirname, "../../frontend/produto.html"));
 });
 
 const PORT = process.env.PORT || 3000;

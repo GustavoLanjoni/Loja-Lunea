@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Produto | Lunea</title>
+
+  <link rel="stylesheet" href="css/produto.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+
+  <header class="product-header">
+    <a href="/" class="back-link">
+      <i data-lucide="arrow-left"></i>
+      Voltar
+    </a>
+
+    <a href="/" class="logo">
+      Lunea
+    </a>
+
+    <a href="/perfil" class="profile-link">
+      <i data-lucide="user"></i>
+    </a>
+  </header>
+
+  <main class="product-page">
+
+    <section class="product-detail">
+
+      <div class="product-gallery">
+        <div class="main-image-box">
+          <img id="produtoImagemPrincipal" src="" alt="Produto">
+        </div>
+
+        <div class="product-thumbnails" id="produtoMiniaturas"></div>
+      </div>
+
+      <div class="product-content">
+
+        <span class="product-category-detail" id="produtoCategoria">
+          Lunea
+        </span>
+
+        <h1 id="produtoNome">
+          Carregando...
+        </h1>
+
+        <p class="product-description" id="produtoDescricao">
+          Carregando informações do produto...
+        </p>
+
+        <strong class="product-price-detail" id="produtoPreco">
+          R$ 0,00
+        </strong>
+
+        <div class="product-quantity-detail">
+          <button id="diminuirQuantidade" type="button">
+            −
+          </button>
+
+          <span id="quantidadeProduto">
+            1
+          </span>
+
+          <button id="aumentarQuantidade" type="button">
+            +
+          </button>
+        </div>
+
+        <button class="buy-whatsapp" id="comprarWhatsApp">
+          Comprar pelo WhatsApp
+        </button>
+
+        <div class="product-benefits">
+          <div>
+            <i data-lucide="truck"></i>
+            <span>Frete grátis para todo Brasil</span>
+          </div>
+
+          <div>
+            <i data-lucide="shield-check"></i>
+            <span>Compra segura</span>
+          </div>
+
+          <div>
+            <i data-lucide="message-circle"></i>
+            <span>Atendimento humanizado</span>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="js/produto.js"></script>
+
+  <script>
+    lucide.createIcons();
+  </script>
+
+</body>
+
+</html>

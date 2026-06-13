@@ -44,6 +44,50 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const resultado = await pool.query(
+      `
+      SELECT 
+        p.*,
+        c.nome AS categoria_nome,
+        COALESCE(
+          json_agg(
+            json_build_object(
+              'id', pi.id,
+              'imagem_url', pi.imagem_url,
+              'ordem', pi.ordem
+            )
+            ORDER BY pi.ordem ASC
+          ) FILTER (WHERE pi.id IS NOT NULL),
+          '[]'
+        ) AS imagens
+      FROM produtos p
+      LEFT JOIN categorias c ON c.id = p.categoria_id
+      LEFT JOIN produto_imagens pi ON pi.produto_id = p.id
+      WHERE p.id = $1
+      GROUP BY p.id, c.nome
+      `,
+      [id]
+    );
+
+    if (resultado.rows.length === 0) {
+      return res.status(404).json({
+        erro: "Produto não encontrado",
+      });
+    }
+
+    res.json(resultado.rows[0]);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      erro: "Erro ao buscar produto",
+    });
+  }
+});
+
 router.post("/", upload.array("imagens", 5), async (req, res) => {
   const { nome, descricao, preco, categoria_id, estoque } = req.body;
   const arquivos = req.files as Express.Multer.File[];
