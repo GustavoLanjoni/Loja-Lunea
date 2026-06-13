@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Destaque da Home | Admin Lunea</title>
+
+  <link rel="stylesheet" href="css/admin-destaque.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+
+  <aside class="admin-sidebar">
+    <a href="/admin" class="admin-logo">
+      Lunea
+    </a>
+
+    <nav class="admin-menu">
+      <a href="/admin">
+        <i data-lucide="layout-dashboard"></i>
+        Dashboard
+      </a>
+
+      <a href="/admin-produtos">
+        <i data-lucide="package"></i>
+        Produtos
+      </a>
+
+      <a href="/admin-destaque" class="active">
+        <i data-lucide="image"></i>
+        Destaque da Home
+      </a>
+
+      <a href="/">
+        <i data-lucide="store"></i>
+        Ver loja
+      </a>
+    </nav>
+  </aside>
+
+  <main class="admin-main">
+
+    <header class="admin-header">
+      <div>
+        <span>Home</span>
+        <h1>Destaque da Home</h1>
+        <p>
+          Altere a imagem, título, texto e escolha o produto que será destacado na página inicial da loja.
+        </p>
+      </div>
+
+      <a href="/admin" class="back-admin">
+        <i data-lucide="arrow-left"></i>
+        Voltar
+      </a>
+    </header>
+
+    <section class="highlight-admin-layout">
+
+      <form id="destaqueForm" class="highlight-admin-form" enctype="multipart/form-data">
+
+        <div class="form-group">
+          <label>Título do destaque</label>
+          <input 
+            type="text" 
+            id="destaqueAdminTitulo" 
+            placeholder="Ex: Produtos top da semana" 
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label>Texto do destaque</label>
+          <textarea 
+            id="destaqueAdminTexto" 
+            placeholder="Digite o texto que vai aparecer na home"
+            required
+          ></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Imagem do destaque</label>
+          <input 
+            type="file" 
+            id="destaqueAdminImagem" 
+            accept="image/*"
+          >
+
+          <small class="input-help">
+            Envie uma imagem para aparecer na seção de destaque da home.
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label>Produto do destaque</label>
+          <select id="destaqueAdminProduto" required>
+            <option value="">Carregando produtos...</option>
+          </select>
+
+          <small class="input-help">
+            Quando o cliente clicar no botão, ele será levado para a página desse produto.
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label>Texto do botão</label>
+          <input 
+            type="text" 
+            id="destaqueAdminBotaoTexto" 
+            placeholder="Ex: Ver produto"
+          >
+        </div>
+
+        <input 
+          type="hidden" 
+          id="destaqueAdminBotaoLink"
+          value="#produtos"
+        >
+
+        <label class="switch-line">
+          <input type="checkbox" id="destaqueAdminAtivo">
+          <span></span>
+          Destaque ativo na loja
+        </label>
+
+        <button type="submit" class="btn-primary">
+          Salvar destaque
+        </button>
+
+      </form>
+
+      <div class="highlight-admin-preview">
+        <span>Preview</span>
+
+        <div class="highlight-preview-card">
+          <img id="previewDestaqueImagem" src="" alt="Preview destaque">
+
+          <div>
+            <small>Destaque especial</small>
+
+            <h3 id="previewDestaqueTitulo">
+              Título do destaque
+            </h3>
+
+            <p id="previewDestaqueTexto">
+              Texto do destaque aparecerá aqui.
+            </p>
+
+            <button id="previewDestaqueBotao" type="button">
+              Ver produto
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <script src="js/admin-destaque.js"></script>
+
+  <script>
+    lucide.createIcons();
+  </script>
+
+</body>
+
+</html>

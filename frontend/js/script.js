@@ -1,5 +1,6 @@
 const API_URL = "http://localhost:3000/produtos";
 const API_FAVORITOS = "http://localhost:3000/favoritos";
+const API_DESTAQUE = "http://localhost:3000/destaque";
 
 const productsGrid = document.getElementById("productsGrid");
 const cartDrawer = document.getElementById("cartDrawer");
@@ -453,6 +454,47 @@ if (mobileSearchSubmit) {
   });
 }
 
+
+async function carregarDestaqueHome() {
+  try {
+    const resposta = await fetch(API_DESTAQUE);
+    const destaque = await resposta.json();
+
+    const destaqueHome = document.getElementById("destaqueHome");
+
+    if (!resposta.ok) {
+      if (destaqueHome) {
+        destaqueHome.style.display = "none";
+      }
+      return;
+    }
+
+    const destaqueImagem = document.getElementById("destaqueImagem");
+    const destaqueTitulo = document.getElementById("destaqueTitulo");
+    const destaqueTexto = document.getElementById("destaqueTexto");
+    const destaqueBotao = document.getElementById("destaqueBotao");
+
+    if (!destaqueImagem || !destaqueTitulo || !destaqueTexto || !destaqueBotao) {
+      return;
+    }
+
+    destaqueImagem.src = destaque.imagem_url;
+    destaqueTitulo.textContent = destaque.titulo;
+    destaqueTexto.textContent = destaque.texto;
+
+    destaqueBotao.textContent = destaque.botao_texto || "Ver produto";
+
+    if (destaque.produto_id) {
+      destaqueBotao.href = `/produto?id=${destaque.produto_id}`;
+    } else {
+      destaqueBotao.href = destaque.botao_link || "#produtos";
+    }
+
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 /* =========================================================
    EVENTOS PRINCIPAIS
 ========================================================= */
@@ -483,3 +525,4 @@ if (searchInput) {
 
 carregarProdutos();
 verificarSessao();
+carregarDestaqueHome();
