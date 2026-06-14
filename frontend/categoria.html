@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Categoria | Lunea</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/categoria.css">
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+
+    <header class="category-header">
+        <a href="/" class="category-back">
+            <i data-lucide="arrow-left"></i>
+            Voltar
+        </a>
+
+        <a href="/" class="category-logo">
+            Lunea
+        </a>
+
+        <div class="category-actions">
+            <a href="/perfil" class="category-user" aria-label="Minha conta">
+                <i data-lucide="user"></i>
+            </a>
+
+            <a href="/" class="category-cart" aria-label="Sacola">
+                <i data-lucide="shopping-bag"></i>
+                <span>0</span>
+            </a>
+        </div>
+    </header>
+    <main class="category-page">
+
+        <section class="category-hero">
+            <span>Categoria</span>
+
+            <h1 id="categoriaTitulo">
+                Carregando...
+            </h1>
+
+            <p id="categoriaDescricao">
+                Veja os produtos disponíveis nessa categoria.
+            </p>
+        </section>
+
+        <section class="category-products">
+            <div class="products-grid" id="categoriaProductsGrid">
+                <div class="empty-products">
+                    Carregando produtos...
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <div class="toast" id="toast"></div>
+
+    <script src="js/categoria.js"></script>
+
+    <script>
+        lucide.createIcons();
+    </script>
+
+</body>
+
+</html>

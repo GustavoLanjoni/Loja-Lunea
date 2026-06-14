@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Dicas | Admin Lunea</title>
+
+  <link rel="stylesheet" href="css/admin-dicas.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+
+  <aside class="admin-sidebar">
+    <a href="/admin" class="admin-logo">Lunea</a>
+
+    <nav class="admin-menu">
+      <a href="/admin">
+        <i data-lucide="layout-dashboard"></i>
+        Dashboard
+      </a>
+
+      <a href="/admin-produtos">
+        <i data-lucide="package"></i>
+        Produtos
+      </a>
+
+      <a href="/admin-destaque">
+        <i data-lucide="image"></i>
+        Destaque da Home
+      </a>
+
+      <a href="/admin-dicas" class="active">
+        <i data-lucide="book-open"></i>
+        Dicas da Pele
+      </a>
+
+      <a href="/">
+        <i data-lucide="store"></i>
+        Ver loja
+      </a>
+    </nav>
+  </aside>
+
+  <main class="admin-main">
+
+    <header class="admin-header">
+      <div>
+        <span>Conteúdo Lunea</span>
+        <h1>Dicas da pele</h1>
+        <p>
+          Crie conteúdos educativos e vincule produtos recomendados para cada assunto.
+        </p>
+      </div>
+
+      <a href="/admin" class="back-admin">
+        <i data-lucide="arrow-left"></i>
+        Voltar
+      </a>
+    </header>
+
+    <section class="admin-layout">
+
+      <form id="dicaForm" class="dica-form">
+
+        <input type="hidden" id="dicaId">
+
+        <div class="form-header">
+          <div>
+            <span>Cadastro</span>
+            <h2 id="formTitulo">Nova dica</h2>
+          </div>
+
+          <button type="button" id="btnNovaDica" class="btn-light">
+            Nova dica
+          </button>
+        </div>
+
+        <div class="form-group">
+          <label>Título da dica</label>
+          <input type="text" id="dicaTitulo" placeholder="Ex: Como montar sua rotina de skincare" required>
+        </div>
+
+        <div class="form-group">
+          <label>Resumo</label>
+          <textarea id="dicaResumo" placeholder="Resumo curto que aparece na página da dica"></textarea>
+          <small>Esse resumo aparece no card da home. O texto será limitado para não quebrar o layout.</small>
+        </div>
+
+        <div class="form-group">
+          <label>Conteúdo completo</label>
+          <textarea id="dicaConteudo" placeholder="Texto explicativo completo da dica" required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Produtos recomendados</label>
+
+          <div class="products-select-list" id="produtosSelectList">
+            Carregando produtos...
+          </div>
+        </div>
+
+        <label class="switch-line">
+          <input type="checkbox" id="dicaAtivo" checked>
+          <span></span>
+          Dica ativa na loja
+        </label>
+
+        <button type="submit" class="btn-primary">
+          Salvar dica
+        </button>
+
+        <div class="dica-preview-admin">
+          <div class="preview-admin-label">
+            Preview na home
+          </div>
+
+          <article class="skin-tip-card-preview">
+            <h3 id="previewDicaTitulo">
+              Título da dica
+            </h3>
+
+            <p id="previewDicaResumo">
+              Resumo da dica aparecerá aqui.
+            </p>
+
+            <a href="#" onclick="return false;">
+              Saiba mais
+              <i data-lucide="arrow-right"></i>
+            </a>
+          </article>
+        </div>
+
+      </form>
+
+      <section class="dicas-list-card">
+        <div class="list-header">
+          <div>
+            <span>Lista</span>
+            <h2>Dicas cadastradas</h2>
+          </div>
+        </div>
+
+        <div class="dicas-list" id="dicasList">
+          Carregando dicas...
+        </div>
+      </section>
+
+    </section>
+
+  </main>
+
+  <script src="js/admin-dicas.js"></script>
+
+  <script>
+    lucide.createIcons();
+  </script>
+
+</body>
+
+</html>

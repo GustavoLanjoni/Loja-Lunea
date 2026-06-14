@@ -9,6 +9,7 @@ import categoriasRoutes from "./routes/categorias.routes";
 import usuariosRoutes from "./routes/usuarios.routes";
 import favoritosRoutes from "./routes/favoritos.routes";
 import destaqueRoutes from "./routes/destaque.routes";
+import dicasRoutes from "./routes/dicas.routes";
 
 dotenv.config();
 
@@ -29,7 +30,8 @@ app.use("/categorias", categoriasRoutes);
 app.use("/usuarios", usuariosRoutes);
 app.use("/favoritos", favoritosRoutes);
 app.use("/destaque", destaqueRoutes);
-
+app.use("/dicas", dicasRoutes);
+app.use("/dicas", dicasRoutes);
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "../../frontend/lunea.html"));
@@ -69,6 +71,18 @@ app.get("/produto", (req, res) => {
 
 app.get("/admin-destaque", (req, res) => {
   res.sendFile(path.join(__dirname, "../../frontend/admin-destaque.html"));
+});
+
+app.get("/categoria", (req, res) => {
+  res.sendFile(path.join(__dirname, "../../frontend/categoria.html"));
+});
+
+app.get("/dica", (req, res) => {
+  res.sendFile(path.join(__dirname, "../../frontend/dica.html"));
+});
+
+app.get("/admin-dicas", (req, res) => {
+  res.sendFile(path.join(__dirname, "../../frontend/admin-dicas.html"));
 });
 
 const PORT = process.env.PORT || 3000;

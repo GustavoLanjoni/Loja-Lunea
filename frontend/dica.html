@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Dica | Lunea</title>
+
+  <link rel="stylesheet" href="css/dica.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+
+  <header class="tip-header">
+    <a href="/" class="tip-back">
+      <i data-lucide="arrow-left"></i>
+      Voltar
+    </a>
+
+    <a href="/" class="tip-logo">
+      Lunea
+    </a>
+
+    <div class="tip-actions">
+      <a href="/perfil" class="tip-user" aria-label="Minha conta">
+        <i data-lucide="user"></i>
+      </a>
+
+      <a href="/" class="tip-cart" aria-label="Sacola">
+        <i data-lucide="shopping-bag"></i>
+        <span>0</span>
+      </a>
+    </div>
+  </header>
+
+  <main class="tip-page">
+
+    <section class="tip-hero">
+      <div class="tip-hero-content">
+        <span>Guia Lunea</span>
+
+        <h1 id="dicaTitulo">
+          Carregando...
+        </h1>
+
+        <p id="dicaResumo">
+          Carregando dica da Lunea...
+        </p>
+
+        <div class="tip-hero-actions">
+          <a href="#produtosIndicados" class="tip-hero-button">
+            Ver produtos indicados
+            <i data-lucide="arrow-down"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="tip-hero-visual" aria-hidden="true">
+        <div class="floating-card card-cleanser">
+          <span>01</span>
+          <strong>Limpeza</strong>
+        </div>
+
+        <div class="floating-card card-hydration">
+          <span>02</span>
+          <strong>Hidratação</strong>
+        </div>
+
+        <div class="floating-card card-protection">
+          <span>03</span>
+          <strong>Proteção</strong>
+        </div>
+
+        <div class="glow-orb orb-one"></div>
+        <div class="glow-orb orb-two"></div>
+      </div>
+    </section>
+
+    <section class="tip-article-section">
+      <article class="tip-article">
+        <div class="article-label">
+          <i data-lucide="sparkles"></i>
+          Conteúdo especial
+        </div>
+
+        <h2>Entenda melhor esse cuidado</h2>
+
+        <p id="dicaConteudo">
+          Carregando conteúdo...
+        </p>
+      </article>
+    </section>
+
+    <section class="tip-products-section" id="produtosIndicados">
+      <div class="tip-products-header">
+        <span>Escolhas Lunea</span>
+
+        <h2>Produtos Recomendados</h2>
+
+        <p>
+          Veja opções que combinam com essa dica e podem deixar sua rotina mais completa, prática e eficiente.
+        </p>
+      </div>
+
+      <div class="tip-products-grid" id="dicaProdutosGrid">
+        <div class="empty-products">
+          Carregando produtos...
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="js/dica.js"></script>
+
+  <script>
+    lucide.createIcons();
+  </script>
+
+</body>
+
+</html>
