@@ -9,9 +9,13 @@ const upload = multer({
   storage: multer.memoryStorage(),
   limits: {
     files: 5,
-    fileSize: 5 * 1024 * 1024,
+    fileSize: 20 * 1024 * 1024, // 20MB por imagem
   },
 });
+
+/* =========================================================
+   LISTAR PRODUTOS
+========================================================= */
 
 router.get("/", async (req, res) => {
   try {
@@ -43,6 +47,10 @@ router.get("/", async (req, res) => {
     res.status(500).json({ erro: "Erro ao listar produtos" });
   }
 });
+
+/* =========================================================
+   BUSCAR PRODUTO POR ID
+========================================================= */
 
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
@@ -87,6 +95,10 @@ router.get("/:id", async (req, res) => {
     });
   }
 });
+
+/* =========================================================
+   CADASTRAR PRODUTO
+========================================================= */
 
 router.post("/", upload.array("imagens", 5), async (req, res) => {
   const { nome, descricao, preco, categoria_id, estoque } = req.body;
@@ -172,9 +184,15 @@ router.post("/", upload.array("imagens", 5), async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ erro: "Erro ao cadastrar produto" });
+    res.status(500).json({
+      erro: "Erro ao cadastrar produto",
+    });
   }
 });
+
+/* =========================================================
+   ATUALIZAR PRODUTO
+========================================================= */
 
 router.put("/:id", async (req, res) => {
   const { id } = req.params;
@@ -205,6 +223,10 @@ router.put("/:id", async (req, res) => {
   }
 });
 
+/* =========================================================
+   EXCLUIR PRODUTO
+========================================================= */
+
 router.delete("/:id", async (req, res) => {
   const { id } = req.params;
 
@@ -223,6 +245,39 @@ router.delete("/:id", async (req, res) => {
     console.error(error);
     res.status(500).json({ erro: "Erro ao excluir produto" });
   }
+});
+
+/* =========================================================
+   TRATAMENTO DE ERROS DO MULTER
+   Isso evita o erro HTML no navegador
+========================================================= */
+
+router.use((error: any, req: any, res: any, next: any) => {
+  if (error instanceof multer.MulterError) {
+    if (error.code === "LIMIT_FILE_SIZE") {
+      return res.status(400).json({
+        erro: "Imagem muito grande. Envie uma imagem de no máximo 20MB.",
+      });
+    }
+
+    if (error.code === "LIMIT_FILE_COUNT") {
+      return res.status(400).json({
+        erro: "Você pode enviar no máximo 5 imagens.",
+      });
+    }
+
+    return res.status(400).json({
+      erro: "Erro no upload da imagem.",
+      detalhes: error.message,
+    });
+  }
+
+  console.error(error);
+
+  return res.status(500).json({
+    erro: "Erro interno no servidor.",
+    detalhes: error.message,
+  });
 });
 
 export default router;

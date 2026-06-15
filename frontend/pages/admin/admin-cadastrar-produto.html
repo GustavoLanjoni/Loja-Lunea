@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Cadastrar Produto | Lunea</title>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <link rel="stylesheet" href="/css/admin.css" />
+</head>
+
+<body>
+
+    <aside class="sidebar">
+        <div class="brand">
+            <h1>Lunea</h1>
+            <span>Painel Admin</span>
+        </div>
+
+        <nav class="menu">
+
+            <a href="/admin">
+                Dashboard
+            </a>
+
+            <div class="menu-dropdown active">
+
+                <div class="menu-parent-row">
+                    <a href="/admin-produtos" class="menu-parent-link active">
+                        Produtos
+                    </a>
+
+                    <button class="menu-arrow-button" type="button" id="toggleProdutosMenu"
+                        aria-label="Abrir submenu de produtos">
+                        <i data-lucide="chevron-right"></i>
+                    </button>
+                </div>
+
+                <div class="submenu" id="produtosSubmenu">
+                    <a href="/admin-cadastrar-produto" class="active">
+                        Cadastrar Produto
+                    </a>
+
+                    <a href="/admin-produtos">
+                        Produtos Cadastrados
+                    </a>
+
+                    <a href="/admin-categorias">
+                        Adicionar Categorias
+                    </a>
+                </div>
+
+            </div>
+
+            <a href="/admin-destaque">
+                Destaques Home
+            </a>
+
+            <a href="/admin-dicas">
+                Dicas
+            </a>
+
+            <a href="/">
+                Ver Loja
+            </a>
+
+        </nav>
+    </aside>
+
+    <main class="main">
+
+        <header class="topbar">
+            <div>
+                <h2>Cadastrar Produto</h2>
+                <p>Adicione novos produtos que aparecerão na loja Lunea.</p>
+            </div>
+        </header>
+
+        <section class="panel" id="produtos">
+
+            <div class="panel-header">
+                <div>
+                    <h3>Informações do Produto</h3>
+                    <p>Preencha os dados, escolha a categoria, selecione as coleções e envie até 5 imagens.</p>
+                </div>
+            </div>
+
+            <div class="admin-product-layout">
+
+                <form id="produtoForm" class="form">
+                    <input type="hidden" id="produtoId" />
+
+                    <div class="form-group">
+                        <label for="nome">Nome do produto</label>
+                        <input type="text" id="nome" placeholder="Ex: Bolsa Lunea Premium" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="descricao">Descrição</label>
+                        <textarea id="descricao" placeholder="Descreva o produto..." required></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="preco">Preço</label>
+                            <input type="number" id="preco" step="0.01" placeholder="79.90" required />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="estoque">Estoque</label>
+                            <input type="number" id="estoque" placeholder="10" required />
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="categoria_id">Categoria</label>
+                            <select id="categoria_id" required>
+                                <option value="">Carregando categorias...</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="imagens">Imagens do produto</label>
+
+                            <div class="image-guideline">
+                                <strong>Resolução recomendada</strong>
+                                <span>Use imagens quadradas em 1024 × 1024px ou 1200 × 1200px.</span>
+                                <small>Formato ideal: JPG, PNG ou WEBP. Tamanho recomendado: até 2MB por imagem.</small>
+                            </div>
+
+                            <input type="file" id="imagens" multiple accept="image/*" required />
+                            <small>Você pode selecionar até 5 imagens.</small>
+                        </div>
+                    </div>
+
+                    <!-- =========================================================
+                         COLEÇÕES DA LOJA
+                    ========================================================== -->
+                    <div class="form-group form-group-full">
+                        <label>Coleções da loja</label>
+
+                        <div class="collections-info">
+                            <strong>Onde esse produto vai aparecer?</strong>
+                            <span>
+                                Selecione as seções da loja em que esse produto deve ser exibido.
+                            </span>
+                        </div>
+
+                        <div class="collections-options" id="colecoesOptions">
+                            <p class="collections-loading">Carregando coleções...</p>
+                        </div>
+
+                        <small>
+                            Exemplo: Mais vendidos, Produtos selecionados, Novidades ou Favoritos da Lunea.
+                        </small>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary" id="btnSalvar">
+                            Cadastrar Produto
+                        </button>
+
+                        <button type="button" class="btn-secondary" id="btnCancelar">
+                            Cancelar
+                        </button>
+                    </div>
+                </form>
+
+                <aside class="product-preview">
+                    <div class="preview-label">Prévia do produto</div>
+
+                    <div class="preview-image-box">
+                        <img id="previewImagem" src="" alt="Preview do produto">
+                    </div>
+
+                    <div class="preview-gallery" id="previewGaleria"></div>
+
+                    <div class="preview-content">
+                        <span id="previewCategoria">Categoria</span>
+                        <h4 id="previewNome">Nome do produto</h4>
+                        <p id="previewDescricao">Descrição do produto aparecerá aqui.</p>
+                        <strong id="previewPreco">R$ 0,00</strong>
+                    </div>
+                </aside>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <div class="toast" id="toast"></div>
+
+    <script src="/js/admin.js"></script>
+
+    <script>
+        function iniciarSubmenuProdutosAdmin() {
+            const botao = document.getElementById("toggleProdutosMenu");
+
+            if (!botao) return;
+
+            const dropdown = botao.closest(".menu-dropdown");
+
+            botao.addEventListener("click", (event) => {
+                event.preventDefault();
+                event.stopPropagation();
+
+                dropdown.classList.toggle("active");
+
+                if (window.lucide) {
+                    lucide.createIcons();
+                }
+            });
+
+            if (window.lucide) {
+                lucide.createIcons();
+            }
+        }
+
+        iniciarSubmenuProdutosAdmin();
+
+        if (window.lucide) {
+            lucide.createIcons();
+        }
+    </script>
+
+</body>
+
+</html>

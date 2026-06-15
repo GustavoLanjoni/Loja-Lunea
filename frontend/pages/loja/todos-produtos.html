@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Todos os Produtos | Lunea</title>
+
+    <link rel="stylesheet" href="/css/todos-produtos.css">
+</head>
+<body>
+
+<section class="produtos-page">
+
+    <div class="titulo-pagina">
+        <h1>Todos os Produtos</h1>
+        <p>Conheça toda a coleção Lunea.</p>
+    </div>
+
+    <div class="barra-filtros">
+        <input
+            type="text"
+            id="buscarProduto"
+            placeholder="Buscar produto..."
+        >
+
+        <select id="ordenacao">
+            <option value="recentes">Mais recentes</option>
+            <option value="menor-preco">Menor preço</option>
+            <option value="maior-preco">Maior preço</option>
+        </select>
+    </div>
+
+    <div class="products-grid" id="productsGrid"></div>
+
+</section>
+
+<script src="/js/todos-produtos.js"></script>
+
+</body>
+</html>

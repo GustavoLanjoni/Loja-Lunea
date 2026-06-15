@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Dashboard | Lunea</title>
+
+    <!-- Ícones Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- CSS do admin -->
+    <link rel="stylesheet" href="/css/admin.css" />
+</head>
+
+<body>
+
+    <!-- =========================================================
+         SIDEBAR
+    ========================================================== -->
+    <aside class="sidebar">
+        <div class="brand">
+            <h1>Lunea</h1>
+            <span>Painel Admin</span>
+        </div>
+
+        <nav class="menu">
+
+            <a href="/admin" class="active">
+                Dashboard
+            </a>
+
+            <div class="menu-dropdown" id="produtosDropdown">
+
+                <div class="menu-parent-row">
+                    <a href="/admin-produtos" class="menu-parent-link">
+                        Produtos
+                    </a>
+
+                    <button class="menu-arrow-button" type="button" id="toggleProdutosMenu"
+                        aria-label="Abrir submenu de produtos"
+                        onclick="document.getElementById('produtosDropdown').classList.toggle('active')">
+                        <i data-lucide="chevron-right"></i>
+                    </button>
+                </div>
+
+                <div class="submenu" id="produtosSubmenu">
+                    <a href="/admin-cadastrar-produto">
+                        Cadastrar Produto
+                    </a>
+
+                    <a href="/admin-produtos">
+                        Produtos Cadastrados
+                    </a>
+
+                    <a href="/admin-categorias">
+                        Adicionar Categorias
+                    </a>
+                </div>
+
+            </div>
+
+            <a href="/admin-destaque">
+                Destaques Home
+            </a>
+
+            <a href="/admin-dicas">
+                Dicas
+            </a>
+
+            <a href="/">
+                Ver Loja
+            </a>
+
+        </nav>
+    </aside>
+
+    <!-- =========================================================
+         CONTEÚDO PRINCIPAL
+    ========================================================== -->
+    <main class="main">
+
+        <!-- TOPO -->
+        <header class="topbar">
+            <div>
+                <h2>Dashboard</h2>
+                <p>Veja um resumo geral da loja Lunea.</p>
+            </div>
+        </header>
+
+        <!-- =========================================================
+             CARDS DO DASHBOARD
+        ========================================================== -->
+        <section class="cards">
+
+            <div class="card">
+                <span>Total de produtos</span>
+                <strong id="totalProdutos">0</strong>
+            </div>
+
+            <div class="card">
+                <span>Produtos ativos</span>
+                <strong id="produtosAtivos">0</strong>
+            </div>
+
+            <div class="card">
+                <span>Categorias</span>
+                <strong id="totalCategorias">0</strong>
+            </div>
+
+            <div class="card">
+                <span>Estoque total</span>
+                <strong id="estoqueTotal">0</strong>
+            </div>
+
+        </section>
+
+        
+    </main>
+
+    <!-- TOAST -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const botao = document.getElementById("toggleProdutosMenu");
+
+            if (!botao) return;
+
+            const dropdown = botao.closest(".menu-dropdown");
+
+            botao.addEventListener("click", (event) => {
+                event.preventDefault();
+                event.stopPropagation();
+
+                dropdown.classList.toggle("active");
+
+                if (window.lucide) {
+                    lucide.createIcons();
+                }
+            });
+
+            if (window.lucide) {
+                lucide.createIcons();
+            }
+        });
+    </script>
+
+
+    <!-- JS do admin -->
+    <script src="/js/admin.js"></script>
+
+    <!-- Inicializar ícones -->
+    <script>
+        lucide.createIcons();
+    </script>
+
+
+
+</body>
+
+</html>

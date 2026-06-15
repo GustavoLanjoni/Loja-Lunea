@@ -3,12 +3,16 @@ const API_FAVORITOS = "http://localhost:3000/favoritos";
 const API_DESTAQUE = "http://localhost:3000/destaque";
 const API_CATEGORIAS = "http://localhost:3000/categorias";
 const API_DICAS = "http://localhost:3000/dicas";
+const API_COLECOES = "http://localhost:3000/colecoes";
+
+const LIMITE_PRODUTOS_SECAO = 8;
 
 /* =========================================================
    ELEMENTOS PRINCIPAIS
 ========================================================= */
 
 const productsGrid = document.getElementById("productsGrid");
+const selectedProductsGrid = document.getElementById("selectedProductsGrid");
 
 const cartDrawer = document.getElementById("cartDrawer");
 const overlay = document.getElementById("overlay");
@@ -85,19 +89,32 @@ function limitarTexto(texto, limite = 120) {
 }
 
 function pegarImagemProduto(produto) {
-  if (produto.imagens && produto.imagens.length > 0) {
+  console.log("Produto completo:", produto);
+
+  // Array imagens vindo do backend
+  if (
+    produto.imagens &&
+    Array.isArray(produto.imagens) &&
+    produto.imagens.length > 0 &&
+    produto.imagens[0].imagem_url
+  ) {
     return produto.imagens[0].imagem_url;
   }
 
-  if (produto.produto_imagens && produto.produto_imagens.length > 0) {
-    const imagensOrdenadas = [...produto.produto_imagens].sort((a, b) => {
-      return Number(a.ordem || 0) - Number(b.ordem || 0);
-    });
-
-    return imagensOrdenadas[0].imagem_url;
+  // Caso venha como produto_imagens
+  if (
+    produto.produto_imagens &&
+    produto.produto_imagens.length > 0
+  ) {
+    return produto.produto_imagens[0].imagem_url;
   }
 
-  return produto.imagem || "https://via.placeholder.com/400x300";
+  // Campo único
+  if (produto.imagem_url) {
+    return produto.imagem_url;
+  }
+
+  return "/assets/img/sem-imagem.png";
 }
 
 /* =========================================================
@@ -204,26 +221,35 @@ function animarCardsProdutos() {
 }
 
 /* =========================================================
-   CARREGAR PRODUTOS
+   CARREGAR PRODUTOS - MAIS VENDIDOS
 ========================================================= */
 
 async function carregarProdutos() {
   if (!productsGrid) return;
 
   try {
-    const resposta = await fetch(API_URL);
-    const produtos = await resposta.json();
+    const respostaTodos = await fetch(API_URL);
+    const todosProdutos = await respostaTodos.json();
 
-    if (!resposta.ok) {
+    if (!respostaTodos.ok) {
       mostrarToast("Erro ao carregar produtos");
       return;
     }
 
-    produtosLoja = produtos.filter((produto) => produto.ativo !== false);
+    produtosLoja = todosProdutos.filter((produto) => produto.ativo !== false);
 
     await carregarFavoritos();
 
-    renderizarProdutos(produtosLoja);
+    let produtosMaisVendidos = await buscarProdutosPorColecao("mais-vendidos");
+
+    if (!produtosMaisVendidos || produtosMaisVendidos.length === 0) {
+      produtosMaisVendidos = produtosLoja;
+    }
+
+    renderizarProdutos(
+      produtosMaisVendidos.slice(0, LIMITE_PRODUTOS_SECAO),
+      productsGrid
+    );
   } catch (error) {
     console.error(error);
     mostrarToast("Erro ao conectar com o servidor");
@@ -260,13 +286,13 @@ async function carregarFavoritos() {
    RENDERIZAR PRODUTOS
 ========================================================= */
 
-function renderizarProdutos(listaProdutos) {
-  if (!productsGrid) return;
+function renderizarProdutos(listaProdutos, grid = productsGrid) {
+  if (!grid) return;
 
-  productsGrid.innerHTML = "";
+  grid.innerHTML = "";
 
   if (!listaProdutos || listaProdutos.length === 0) {
-    productsGrid.innerHTML = `
+    grid.innerHTML = `
       <div class="empty-products">
         Nenhum produto encontrado.
       </div>
@@ -317,7 +343,7 @@ function renderizarProdutos(listaProdutos) {
       window.location.href = `/produto?id=${produto.id}`;
     });
 
-    productsGrid.appendChild(card);
+    grid.appendChild(card);
   });
 
   if (window.lucide) {
@@ -325,6 +351,62 @@ function renderizarProdutos(listaProdutos) {
   }
 
   animarCardsProdutos();
+}
+
+/* =========================================================
+   PRODUTOS POR COLEÇÃO
+========================================================= */
+
+async function buscarProdutosPorColecao(slug) {
+  try {
+    const resposta = await fetch(`${API_COLECOES}/${slug}/produtos`);
+    const produtos = await resposta.json();
+
+    if (!resposta.ok || !Array.isArray(produtos)) {
+      console.error("Erro ao buscar coleção:", slug, produtos);
+      return [];
+    }
+
+    return produtos.filter((produto) => produto.ativo !== false);
+  } catch (error) {
+    console.error("Erro ao buscar produtos da coleção:", slug, error);
+    return [];
+  }
+}
+
+async function carregarProdutosSelecionados() {
+  if (!selectedProductsGrid) return;
+
+  const sectionSelecionados = document.getElementById("produtosSelecionados");
+
+  try {
+    const produtosSelecionados = await buscarProdutosPorColecao(
+      "produtos-selecionados"
+    );
+
+    if (!produtosSelecionados || produtosSelecionados.length === 0) {
+      if (sectionSelecionados) {
+        sectionSelecionados.style.display = "none";
+      }
+
+      return;
+    }
+
+    if (sectionSelecionados) {
+      sectionSelecionados.style.display = "";
+    }
+
+    renderizarProdutos(
+      produtosSelecionados.slice(0, LIMITE_PRODUTOS_SECAO),
+      selectedProductsGrid
+    );
+  } catch (error) {
+    console.error(error);
+
+    if (sectionSelecionados) {
+      sectionSelecionados.style.display = "none";
+    }
+  }
 }
 
 /* =========================================================
@@ -400,7 +482,10 @@ function filtrarProdutos(termoDigitado = null) {
     );
   });
 
-  renderizarProdutos(produtosFiltrados);
+  renderizarProdutos(
+    produtosFiltrados.slice(0, LIMITE_PRODUTOS_SECAO),
+    productsGrid
+  );
 }
 
 function irParaProdutos() {
@@ -814,7 +899,10 @@ function filtrarPorCategoriaHome(nomeCategoria) {
     return categoria === termoCategoria;
   });
 
-  renderizarProdutos(produtosFiltrados);
+  renderizarProdutos(
+    produtosFiltrados.slice(0, LIMITE_PRODUTOS_SECAO),
+    productsGrid
+  );
   irParaProdutos();
 }
 
@@ -928,12 +1016,18 @@ if (searchInput) {
    INICIAR
 ========================================================= */
 
-prepararAnimacoesScroll();
-iniciarFaqLunea();
-iniciarControleVideoLunea();
+async function iniciarLunea() {
+  prepararAnimacoesScroll();
+  iniciarFaqLunea();
+  iniciarControleVideoLunea();
 
-carregarProdutos();
-verificarSessao();
-carregarDestaqueHome();
-carregarCategoriasHome();
-carregarDicasHome();
+  await carregarProdutos();
+  await carregarProdutosSelecionados();
+
+  verificarSessao();
+  carregarDestaqueHome();
+  carregarCategoriasHome();
+  carregarDicasHome();
+}
+
+iniciarLunea();

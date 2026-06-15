@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produtos Cadastrados | Lunea</title>
+
+    <!-- Ícones Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- CSS do admin -->
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+
+<body>
+
+    <!-- =========================================================
+         SIDEBAR
+    ========================================================== -->
+    <aside class="sidebar">
+        <div class="brand">
+            <h1>Lunea</h1>
+            <span>Painel Admin</span>
+        </div>
+
+        <nav class="menu">
+
+            <a href="/admin">
+                Dashboard
+            </a>
+
+            <div class="menu-dropdown active">
+
+                <div class="menu-parent-row">
+                    <a href="/admin-produtos" class="menu-parent-link active">
+                        Produtos
+                    </a>
+
+                    <button
+                        class="menu-arrow-button"
+                        type="button"
+                        id="toggleProdutosMenu"
+                        aria-label="Abrir submenu de produtos"
+                    >
+                        <i data-lucide="chevron-right"></i>
+                    </button>
+                </div>
+
+                <div class="submenu" id="produtosSubmenu">
+                    <a href="/admin-cadastrar-produto">
+                        Cadastrar Produto
+                    </a>
+
+                    <a href="/admin-produtos" class="active">
+                        Produtos Cadastrados
+                    </a>
+
+                    <a href="/admin-categorias">
+                        Adicionar Categorias
+                    </a>
+                </div>
+
+            </div>
+
+            <a href="/admin-destaque">
+                Destaques Home
+            </a>
+
+            <a href="/admin-dicas">
+                Dicas
+            </a>
+
+            <a href="/">
+                Ver Loja
+            </a>
+
+        </nav>
+    </aside>
+
+    <!-- =========================================================
+         CONTEÚDO PRINCIPAL
+    ========================================================== -->
+    <main class="main">
+
+        <header class="topbar">
+            <div>
+                <h2>Produtos Cadastrados</h2>
+                <p>Gerencie todos os produtos cadastrados na loja Lunea.</p>
+            </div>
+        </header>
+
+        <section class="panel">
+
+            <div class="panel-header">
+                <div>
+                    <h3>Produtos Cadastrados</h3>
+                    <p>Pesquise, edite ou exclua produtos.</p>
+                </div>
+            </div>
+
+            <div class="filtros-produtos">
+                <input type="text" id="buscarProduto" placeholder="Pesquisar produto...">
+
+                <select id="filtroCategoria">
+                    <option value="">Todas categorias</option>
+                </select>
+            </div>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Produto</th>
+                            <th>Categoria</th>
+                            <th>Preço</th>
+                            <th>Estoque</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="tabelaProdutos"></tbody>
+                </table>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- TOAST -->
+    <div class="toast" id="toast"></div>
+
+    <!-- MODAL DE EXCLUSÃO -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <h3>Excluir produto?</h3>
+            <p>Essa ação não poderá ser desfeita.</p>
+
+            <div class="modal-actions">
+                <button id="cancelarExclusao" class="btn-secondary">
+                    Cancelar
+                </button>
+
+                <button id="confirmarExclusao" class="btn-danger">
+                    Excluir
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- VISUALIZADOR DE IMAGEM -->
+    <div class="image-viewer" id="imageViewer">
+        <div class="image-viewer-content">
+
+            <button class="close-viewer" id="closeViewer">
+                ✕
+            </button>
+
+            <img id="viewerMainImage" src="" alt="Produto">
+
+            <div class="viewer-thumbnails" id="viewerThumbnails"></div>
+
+        </div>
+    </div>
+
+    <!-- JS da tela de produtos cadastrados -->
+    <script src="/js/admin-produtos.js"></script>
+
+    <!-- JS do submenu -->
+    <script>
+        function iniciarSubmenuProdutosAdmin() {
+            const botao = document.getElementById("toggleProdutosMenu");
+
+            if (!botao) return;
+
+            const dropdown = botao.closest(".menu-dropdown");
+
+            botao.addEventListener("click", (event) => {
+                event.preventDefault();
+                event.stopPropagation();
+
+                dropdown.classList.toggle("active");
+
+                if (window.lucide) {
+                    lucide.createIcons();
+                }
+            });
+
+            if (window.lucide) {
+                lucide.createIcons();
+            }
+        }
+
+        iniciarSubmenuProdutosAdmin();
+
+        if (window.lucide) {
+            lucide.createIcons();
+        }
+    </script>
+
+</body>
+
+</html>

@@ -12,59 +12,44 @@
 
   <!-- =========================================================
        ÍCONES E BIBLIOTECAS VISUAIS
-       - Lucide: ícones do header, busca, menu, carrinho
-       - Font Awesome: ícones das redes sociais no footer
   ========================================================== -->
   <script src="https://unpkg.com/lucide@latest"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
-  <!-- =========================================================
-       CSS PRINCIPAL DA LOJA
-  ========================================================== -->
-  <link rel="stylesheet" href="css/style.css" />
+  <!-- CSS PRINCIPAL DA LOJA -->
+  <link rel="stylesheet" href="/css/style.css" />
 </head>
 
 <body>
 
   <!-- =========================================================
        HEADER PRINCIPAL
-       - Menu desktop à esquerda
-       - Logo central
-       - Ações à direita: busca, perfil e sacola
-       - Botão menu aparece no mobile via CSS
   ========================================================== -->
   <header class="header">
 
-    <!-- Botão do menu mobile -->
     <button class="menu-button" id="menuButton" type="button" aria-label="Abrir menu">
       <i data-lucide="menu"></i>
     </button>
 
-    <!-- Menu desktop -->
     <nav class="nav-left">
       <a href="/" class="active">Página inicial</a>
-      <a href="#categoriasHome">Categorias</a>
+      <a href="/todos-produtos.html" class="btn-ver-todos">Todos os produtos</a>
       <a href="#contato">Contato</a>
       <a href="#">Privacy Policy</a>
     </nav>
 
-    <!-- Logo -->
     <a href="/" class="logo">LUNEA</a>
 
-    <!-- Ações do header -->
     <div class="header-actions">
 
-      <!-- Botão de busca -->
       <button class="search-mobile-button" id="searchMobileButton" type="button" aria-label="Pesquisar">
         <i data-lucide="search"></i>
       </button>
 
-      <!-- Perfil do usuário -->
       <a href="/perfil" class="user-button" aria-label="Minha conta">
         <i data-lucide="user"></i>
       </a>
 
-      <!-- Sacola / Carrinho -->
       <button class="cart-button" id="openCart" type="button" aria-label="Abrir sacola">
         <i data-lucide="shopping-bag"></i>
         <span id="cartCount">0</span>
@@ -75,9 +60,6 @@
 
   <!-- =========================================================
        PAINEL DE BUSCA
-       - Abre ao clicar na lupa
-       - Funciona no desktop e mobile
-       - O JS usa os IDs abaixo
   ========================================================== -->
   <div class="mobile-search-panel" id="mobileSearchPanel">
     <div class="mobile-search-box">
@@ -95,8 +77,6 @@
 
   <!-- =========================================================
        MENU LATERAL MOBILE
-       - Abre ao clicar no botão menu
-       - Fecha no X, no overlay ou ao clicar nos links
   ========================================================== -->
   <aside class="mobile-side-menu" id="mobileSideMenu">
     <div class="mobile-menu-header">
@@ -109,20 +89,18 @@
 
     <nav class="mobile-menu-links">
       <a href="#inicio">Início</a>
-      <a href="#produtos">Coleção</a>
+      <a href="#produtos">Mais vendidos</a>
       <a href="#categoriasHome">Categorias</a>
+      <a href="#produtosSelecionados">Selecionados</a>
       <a href="#sobre">Sobre</a>
       <a href="#contato">Contato</a>
     </nav>
   </aside>
 
-  <!-- Overlay do menu mobile -->
   <div class="menu-overlay" id="menuOverlay"></div>
 
   <!-- =========================================================
        FAIXA SUPERIOR DE FRETE
-       - Texto em loop via CSS
-       - Mantive várias repetições para o loop ficar contínuo
   ========================================================== -->
   <div class="top-announcement">
     <div class="announcement-track">
@@ -139,12 +117,9 @@
 
   <!-- =========================================================
        HERO PRINCIPAL
-       - Primeira dobra do site
-       - Chamada da marca + cards decorativos
   ========================================================== -->
   <section class="hero-editorial" id="inicio">
 
-    <!-- Texto do hero -->
     <div class="hero-copy">
       <span>Lunea by Skin</span>
 
@@ -161,7 +136,6 @@
       </div>
     </div>
 
-    <!-- Visual decorativo do hero -->
     <div class="hero-showcase">
 
       <div class="showcase-card big">
@@ -180,37 +154,37 @@
 
   <!-- =========================================================
        FAIXA DE MARCA
-       - Frase curta abaixo do hero
   ========================================================== -->
   <section class="brand-strip">
     <span>Produtos Selecionados | Qualidade e Delicadeza</span>
   </section>
 
-  <!-- =========================================================
-       CONTEÚDO PRINCIPAL DA HOME
-  ========================================================== -->
+
   <main>
 
     <!-- =========================================================
-         SECTION DE PRODUTOS
+         MAIS VENDIDOS
+
     ========================================================== -->
     <section class="collection-layout marketplace-section" id="produtos">
 
-      <!-- Cabeçalho da coleção -->
       <div class="collection-intro">
         <span>Mais vendidos</span>
         <h2>Os favoritos da Lunea.</h2>
       </div>
 
-      <!-- Grid de produtos renderizado pelo script.js -->
       <div class="products-grid editorial-grid marketplace-products-grid" id="productsGrid"></div>
+
+      <div class="collection-action">
+        <a href="todos-produtos.html" class="collection-view-all">
+          Ver todos os produtos
+        </a>
+      </div>
 
     </section>
 
     <!-- =========================================================
          DESTAQUE DA HOME
-         - Conteúdo controlado pelo admin
-         - JS carrega imagem, título, texto e botão
     ========================================================== -->
     <section class="home-highlight" id="destaqueHome">
       <div class="highlight-image">
@@ -220,13 +194,9 @@
       <div class="highlight-content">
         <span>Destaque especial</span>
 
-        <h2 id="destaqueTitulo">
-          Carregando...
-        </h2>
+        <h2 id="destaqueTitulo">Carregando...</h2>
 
-        <p id="destaqueTexto">
-          Carregando destaque da Lunea...
-        </p>
+        <p id="destaqueTexto">Carregando destaque da Lunea...</p>
 
         <a href="#produtos" id="destaqueBotao" class="highlight-button">
           Ver produtos
@@ -235,9 +205,7 @@
     </section>
 
     <!-- =========================================================
-         CATEGORIAS DA HOME
-         - O JS busca as categorias do backend
-         - Cada card leva para /categoria?id=ID
+         CATEGORIAS ESSENCIAIS
     ========================================================== -->
     <section class="home-categories" id="categoriasHome">
       <div class="home-categories-container">
@@ -256,9 +224,28 @@
     </section>
 
     <!-- =========================================================
+     PRODUTOS SELECIONADOS
+========================================================= -->
+    <section class="collection-layout marketplace-section selected-products-section" id="produtosSelecionados">
+
+      <div class="collection-intro">
+        <span>Curadoria Lunea</span>
+        <h2>Produtos selecionados para você.</h2>
+      </div>
+
+      <div class="products-grid editorial-grid marketplace-products-grid" id="selectedProductsGrid">
+      </div>
+
+      <div class="collection-action">
+        <a href="todos-produtos.html" class="collection-view-all">
+          Ver todos os produtos
+        </a>
+      </div>
+
+    </section>
+
+    <!-- =========================================================
          DICAS DA PELE
-         - O JS busca as dicas cadastradas no admin
-         - Cada card leva para /dica?id=ID
     ========================================================== -->
     <section class="skin-tips-section" id="dicasPele">
       <div class="skin-tips-container">
@@ -284,18 +271,17 @@
       </div>
     </section>
 
-
     <!-- =========================================================
-     VÍDEO + PERGUNTAS FREQUENTES
-========================================================== -->
+         VÍDEO + PERGUNTAS FREQUENTES
+    ========================================================== -->
     <section class="lunea-faq-video-section">
 
-      <!-- ÁREA DO VÍDEO -->
       <div class="lunea-video-container scroll-reveal">
         <span>Conquiste a pele perfeita</span>
 
         <div class="lunea-video-card">
-          <video id="luneaVideo" src="assets/video/videoLunea.mp4" autoplay muted loop playsinline></video>
+          <video id="luneaVideo" src="/assets/video/videoLunea.mp4" autoplay muted loop playsinline>
+          </video>
 
           <button class="lunea-video-control" id="luneaVideoControl" type="button" aria-label="Pausar vídeo">
             <i data-lucide="pause"></i>
@@ -303,7 +289,6 @@
         </div>
       </div>
 
-      <!-- ÁREA DO FAQ -->
       <div class="lunea-faq-container scroll-reveal">
         <div class="lunea-faq-header">
           <h2>Perguntas frequentes</h2>
@@ -388,7 +373,7 @@
     </section>
 
     <!-- =========================================================
-         SOBRE A MARCA
+         SOBRE
     ========================================================== -->
     <section class="brand-story" id="sobre">
       <div class="story-card">
@@ -410,7 +395,7 @@
     </section>
 
     <!-- =========================================================
-         BENEFÍCIOS / CONFIANÇA
+         BENEFÍCIOS
     ========================================================== -->
     <section class="premium-strip">
       <div>
@@ -448,8 +433,6 @@
 
   <!-- =========================================================
        CARRINHO LATERAL
-       - Abre ao clicar na sacola
-       - Produtos são adicionados via JS
   ========================================================== -->
   <aside class="cart-drawer" id="cartDrawer">
     <div class="cart-header">
@@ -465,25 +448,20 @@
     </div>
   </aside>
 
-  <!-- Overlay do carrinho -->
   <div class="overlay" id="overlay"></div>
 
-  <!-- Toast de mensagens modernas -->
   <div class="toast" id="toast"></div>
 
-  <!-- =========================================================
-       BOTÃO FLUTUANTE WHATSAPP
-  ========================================================== -->
+  <!-- BOTÃO FLUTUANTE WHATSAPP -->
   <a href="https://wa.me/5517996489436" class="whatsapp-float" target="_blank" aria-label="Chamar no WhatsApp">
     💬
   </a>
 
   <!-- =========================================================
-       FOOTER PRINCIPAL
+       FOOTER
   ========================================================== -->
   <footer class="footer">
 
-    <!-- Coluna da marca -->
     <div class="footer-brand">
       <h3>Lunea</h3>
 
@@ -509,7 +487,6 @@
       </div>
     </div>
 
-    <!-- Links institucionais -->
     <div class="footer-column">
       <h4>Institucional</h4>
       <a href="#inicio">Início</a>
@@ -518,7 +495,6 @@
       <a href="#contato">Contato</a>
     </div>
 
-    <!-- Links de ajuda -->
     <div class="footer-column">
       <h4>Ajuda</h4>
       <a href="#">Perguntas Frequentes</a>
@@ -527,7 +503,6 @@
       <a href="#">Trocas e Devoluções</a>
     </div>
 
-    <!-- Links de políticas -->
     <div class="footer-column">
       <h4>Políticas</h4>
       <a href="#">Política de Privacidade</a>
@@ -536,7 +511,6 @@
       <a href="#">Política de Cookies</a>
     </div>
 
-    <!-- Atendimento -->
     <div class="footer-column">
       <h4>Atendimento</h4>
       <p>✉ contato.luneabyskin@gmail.com</p>
@@ -547,9 +521,6 @@
 
   <!-- =========================================================
        RODAPÉ EXTRA
-       - Selos de segurança
-       - Formas de pagamento
-       - Copyright
   ========================================================== -->
   <div class="footer-extra">
 
@@ -562,10 +533,10 @@
     <div class="payment-title">Formas de pagamento aceitas</div>
 
     <div class="payment-methods">
-      <img src="assets/pagamentos/visa-classic-svgrepo-com.svg" alt="Visa">
-      <img src="assets/pagamentos/mastercard-svgrepo-com.svg" alt="Mastercard">
-      <img src="assets/pagamentos/elo-svgrepo-com.svg" alt="Elo">
-      <img src="assets/pagamentos/hipercard-3-svgrepo-com.svg" alt="Hipercard">
+      <img src="/assets/pagamentos/visa-classic-svgrepo-com.svg" alt="Visa">
+      <img src="/assets/pagamentos/mastercard-svgrepo-com.svg" alt="Mastercard">
+      <img src="/assets/pagamentos/elo-svgrepo-com.svg" alt="Elo">
+      <img src="/assets/pagamentos/hipercard-3-svgrepo-com.svg" alt="Hipercard">
       <img src="https://cdn.simpleicons.org/discover" alt="Discover">
       <img src="https://logodownload.org/wp-content/uploads/2020/02/pix-bc-logo.png" alt="Pix">
     </div>
@@ -576,12 +547,9 @@
 
   </div>
 
-  <!-- =========================================================
-       JAVASCRIPT PRINCIPAL
-  ========================================================== -->
-  <script src="js/script.js"></script>
+  <!-- JS PRINCIPAL -->
+  <script src="/js/script.js"></script>
 
-  <!-- Inicialização dos ícones Lucide -->
   <script>
     lucide.createIcons();
   </script>

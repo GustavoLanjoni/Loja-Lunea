@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Categorias | Lunea</title>
+
+    <!-- Ícones Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- CSS do admin -->
+    <link rel="stylesheet" href="/css/admin.css" />
+</head>
+
+<body>
+
+    <!-- =========================================================
+         SIDEBAR
+    ========================================================== -->
+    <aside class="sidebar">
+        <div class="brand">
+            <h1>Lunea</h1>
+            <span>Painel Admin</span>
+        </div>
+
+        <nav class="menu">
+
+            <a href="/admin">
+                Dashboard
+            </a>
+
+            <div class="menu-dropdown active">
+
+                <div class="menu-parent-row">
+                    <a href="/admin-produtos" class="menu-parent-link active">
+                        Produtos
+                    </a>
+
+                    <button
+                        class="menu-arrow-button"
+                        type="button"
+                        id="toggleProdutosMenu"
+                        aria-label="Abrir submenu de produtos"
+                    >
+                        <i data-lucide="chevron-right"></i>
+                    </button>
+                </div>
+
+                <div class="submenu" id="produtosSubmenu">
+                    <a href="/admin-cadastrar-produto">
+                        Cadastrar Produto
+                    </a>
+
+                    <a href="/admin-produtos">
+                        Produtos Cadastrados
+                    </a>
+
+                    <a href="/admin-categorias" class="active">
+                        Adicionar Categorias
+                    </a>
+                </div>
+
+            </div>
+
+            <a href="/admin-destaque">
+                Destaques Home
+            </a>
+
+            <a href="/admin-dicas">
+                Dicas
+            </a>
+
+            <a href="/">
+                Ver Loja
+            </a>
+
+        </nav>
+    </aside>
+
+    <!-- =========================================================
+         CONTEÚDO PRINCIPAL
+    ========================================================== -->
+    <main class="main">
+
+        <!-- TOPO -->
+        <header class="topbar">
+            <div>
+                <h2>Categorias</h2>
+                <p>Cadastre e gerencie as categorias dos produtos da loja Lunea.</p>
+            </div>
+        </header>
+
+        <!-- =========================================================
+             CADASTRAR CATEGORIA
+        ========================================================== -->
+        <section class="panel" id="categorias">
+
+            <div class="panel-header">
+                <div>
+                    <h3>Adicionar Categoria</h3>
+                    <p>Crie categorias para organizar melhor os produtos da loja.</p>
+                </div>
+            </div>
+
+            <form id="categoriaForm" class="category-form">
+                <div class="form-group">
+                    <label for="nomeCategoria">Nome da categoria</label>
+                    <input
+                        type="text"
+                        id="nomeCategoria"
+                        placeholder="Ex: Skincare, Maquiagem, Perfumes..."
+                        required
+                    />
+                </div>
+
+                <button type="submit" class="btn-primary">
+                    Adicionar Categoria
+                </button>
+            </form>
+
+        </section>
+
+        <!-- =========================================================
+             LISTA DE CATEGORIAS
+        ========================================================== -->
+        <section class="panel">
+
+            <div class="panel-header">
+                <div>
+                    <h3>Categorias Cadastradas</h3>
+                    <p>Veja e exclua categorias cadastradas na Lunea.</p>
+                </div>
+            </div>
+
+            <div class="category-list" id="listaCategorias">
+                <div class="category-empty">
+                    Carregando categorias...
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- TOAST -->
+    <div class="toast" id="toast"></div>
+
+    <!-- JS do admin -->
+    <script src="/js/admin.js"></script>
+
+    <!-- JS do submenu -->
+    <script>
+        function iniciarSubmenuProdutosAdmin() {
+            const botao = document.getElementById("toggleProdutosMenu");
+
+            if (!botao) return;
+
+            const dropdown = botao.closest(".menu-dropdown");
+
+            botao.addEventListener("click", (event) => {
+                event.preventDefault();
+                event.stopPropagation();
+
+                dropdown.classList.toggle("active");
+
+                if (window.lucide) {
+                    lucide.createIcons();
+                }
+            });
+
+            if (window.lucide) {
+                lucide.createIcons();
+            }
+        }
+
+        iniciarSubmenuProdutosAdmin();
+
+        if (window.lucide) {
+            lucide.createIcons();
+        }
+    </script>
+
+</body>
+
+</html>
