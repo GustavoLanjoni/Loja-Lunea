@@ -429,7 +429,7 @@ async function alternarFavorito(event, produtoId) {
       mostrarToast("Entre na sua conta para favoritar");
 
       setTimeout(() => {
-        window.location.href = "/entrar";
+        window.location.href = "/login";
       }, 1000);
 
       return;
@@ -616,7 +616,7 @@ async function verificarSessao() {
 
     if (!userButton) return;
 
-    userButton.href = resposta.ok ? "/perfil" : "/entrar";
+    userButton.href = resposta.ok ? "/perfil" : "/login";
   } catch (error) {
     console.error(error);
   }

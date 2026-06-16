@@ -1,10 +1,15 @@
+// ==========================================================
+// usuarios.routes.ts — Lunea (atualizado)
+// Login agora retorna o campo "cargo" para o frontend
+// redirecionar corretamente (admin → /admin | cliente → /)
+// ==========================================================
+
 import { Router, Request, Response, NextFunction } from "express";
 import bcrypt from "bcryptjs";
 import { v4 as uuidv4 } from "uuid";
 import { supabase } from "../database/supabase";
 
 const router = Router();
-
 const COOKIE_NAME = "lunea_session";
 
 function calcularExpiracao() {
@@ -13,7 +18,11 @@ function calcularExpiracao() {
   return data;
 }
 
-async function autenticarUsuario(
+// ==========================================================
+// MIDDLEWARE — autenticarUsuario (sem alteração)
+// ==========================================================
+
+export async function autenticarUsuario(
   req: Request,
   res: Response,
   next: NextFunction
@@ -22,9 +31,7 @@ async function autenticarUsuario(
     const token = req.cookies?.[COOKIE_NAME];
 
     if (!token) {
-      return res.status(401).json({
-        erro: "Usuário não autenticado",
-      });
+      return res.status(401).json({ erro: "Usuário não autenticado" });
     }
 
     const agora = new Date().toISOString();
@@ -32,20 +39,10 @@ async function autenticarUsuario(
     const { data: sessao, error } = await supabase
       .from("sessoes_usuarios")
       .select(`
-        id,
-        token,
-        ativo,
-        expira_em,
-        usuario_id,
+        id, token, ativo, expira_em, usuario_id,
         usuarios (
-          id,
-          nome,
-          email,
-          telefone,
-          cargo,
-          empresa_id,
-          ativo,
-          criado_em
+          id, nome, email, telefone,
+          cargo, empresa_id, ativo, criado_em
         )
       `)
       .eq("token", token)
@@ -54,22 +51,45 @@ async function autenticarUsuario(
       .single();
 
     if (error || !sessao) {
-      return res.status(401).json({
-        erro: "Sessão inválida ou expirada",
-      });
+      return res.status(401).json({ erro: "Sessão inválida ou expirada" });
     }
 
     (req as any).usuario = sessao.usuarios;
-
     next();
   } catch (error) {
     console.error(error);
-
-    return res.status(500).json({
-      erro: "Erro ao autenticar usuário",
-    });
+    return res.status(500).json({ erro: "Erro ao autenticar usuário" });
   }
 }
+
+// ==========================================================
+// MIDDLEWARE — autenticarAdmin
+// Garante que só admins acessem rotas protegidas
+// ==========================================================
+
+export async function autenticarAdmin(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  await autenticarUsuario(req, res, () => {
+    const usuario = (req as any).usuario;
+
+    if (usuario?.cargo !== "admin") {
+      return res.status(403).json({
+        erro: "Acesso restrito a administradores",
+      });
+    }
+
+    next();
+  });
+}
+
+// ==========================================================
+// POST /usuarios/cadastro
+// Cadastro público — sempre cria como 'cliente'
+// Admin NUNCA é criado por aqui (somente pelo banco)
+// ==========================================================
 
 router.post("/cadastro", async (req, res) => {
   try {
@@ -88,25 +108,21 @@ router.post("/cadastro", async (req, res) => {
       .maybeSingle();
 
     if (usuarioExistente) {
-      return res.status(400).json({
-        erro: "E-mail já cadastrado",
-      });
+      return res.status(400).json({ erro: "E-mail já cadastrado" });
     }
 
     const senhaHash = await bcrypt.hash(senha, 10);
 
     const { data, error } = await supabase
       .from("usuarios")
-      .insert([
-        {
-          nome,
-          email,
-          telefone,
-          senha: senhaHash,
-          cargo: "cliente",
-          ativo: true,
-        },
-      ])
+      .insert([{
+        nome,
+        email,
+        telefone,
+        senha: senhaHash,
+        cargo: "cliente", // ← sempre cliente, nunca admin
+        ativo: true,
+      }])
       .select("id, nome, email, telefone, cargo, ativo, criado_em")
       .single();
 
@@ -118,21 +134,22 @@ router.post("/cadastro", async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-
-    return res.status(500).json({
-      erro: "Erro ao cadastrar usuário",
-    });
+    return res.status(500).json({ erro: "Erro ao cadastrar usuário" });
   }
 });
+
+// ==========================================================
+// POST /usuarios/login
+// Login único para todos — retorna cargo para o frontend
+// redirecionar corretamente
+// ==========================================================
 
 router.post("/login", async (req, res) => {
   try {
     const { email, senha } = req.body;
 
     if (!email || !senha) {
-      return res.status(400).json({
-        erro: "E-mail e senha são obrigatórios",
-      });
+      return res.status(400).json({ erro: "E-mail e senha são obrigatórios" });
     }
 
     const { data: usuario } = await supabase
@@ -143,93 +160,84 @@ router.post("/login", async (req, res) => {
       .maybeSingle();
 
     if (!usuario) {
-      return res.status(400).json({
-        erro: "Usuário não encontrado",
-      });
+      return res.status(400).json({ erro: "Usuário não encontrado" });
     }
 
     const senhaValida = await bcrypt.compare(senha, usuario.senha);
 
     if (!senhaValida) {
-      return res.status(401).json({
-        erro: "Senha inválida",
-      });
+      return res.status(401).json({ erro: "Senha inválida" });
     }
 
-    const token = uuidv4();
-    const expiraEm = calcularExpiracao();
+    const token     = uuidv4();
+    const expiraEm  = calcularExpiracao();
 
     const { error: erroSessao } = await supabase
       .from("sessoes_usuarios")
-      .insert([
-        {
-          usuario_id: usuario.id,
-          token,
-          expira_em: expiraEm.toISOString(),
-          ativo: true,
-        },
-      ]);
+      .insert([{
+        usuario_id: usuario.id,
+        token,
+        expira_em:  expiraEm.toISOString(),
+        ativo:      true,
+      }]);
 
     if (erroSessao) throw erroSessao;
 
     res.cookie(COOKIE_NAME, token, {
       httpOnly: true,
       sameSite: "lax",
-      secure: false,
-      maxAge: 7 * 24 * 60 * 60 * 1000,
+      secure:   false,
+      maxAge:   7 * 24 * 60 * 60 * 1000,
     });
 
     return res.json({
       mensagem: "Login realizado com sucesso",
       usuario: {
-        id: usuario.id,
-        nome: usuario.nome,
-        email: usuario.email,
+        id:       usuario.id,
+        nome:     usuario.nome,
+        email:    usuario.email,
         telefone: usuario.telefone,
-        cargo: usuario.cargo,
+        cargo:    usuario.cargo, // ← frontend usa isso para redirecionar
       },
     });
   } catch (error) {
     console.error(error);
-
-    return res.status(500).json({
-      erro: "Erro ao fazer login",
-    });
+    return res.status(500).json({ erro: "Erro ao fazer login" });
   }
 });
 
-router.get("/perfil", autenticarUsuario, async (req, res) => {
+// ==========================================================
+// GET /usuarios/sessao
+// Verifica sessão ativa — usado por todas as páginas
+// ==========================================================
+
+router.get("/sessao", autenticarUsuario, async (req, res) => {
   return res.json({
+    logado:  true,
     usuario: (req as any).usuario,
   });
 });
 
+// ==========================================================
+// GET /usuarios/perfil
+// ==========================================================
+
+router.get("/perfil", autenticarUsuario, async (req, res) => {
+  return res.json({ usuario: (req as any).usuario });
+});
+
+// ==========================================================
+// PUT /usuarios/perfil
+// ==========================================================
+
 router.put("/perfil", autenticarUsuario, async (req, res) => {
   try {
     const usuarioLogado = (req as any).usuario;
-    const {
-      nome,
-      telefone,
-      cep,
-      rua,
-      numero,
-      bairro,
-      cidade,
-      estado
-    } = req.body;
+    const { nome, telefone, cep, rua, numero, bairro, cidade, estado } = req.body;
 
     const { data, error } = await supabase
       .from("usuarios")
-      .update({
-        nome,
-        telefone,
-        cep,
-        rua,
-        numero,
-        bairro,
-        cidade,
-        estado
-      })
+      .update({ nome, telefone, cep, rua, numero, bairro, cidade, estado })
       .eq("id", usuarioLogado.id)
       .select("id, nome, email, telefone, cep, rua, numero, bairro, cidade, estado, cargo, ativo, criado_em")
       .single();
@@ -238,16 +246,17 @@ router.put("/perfil", autenticarUsuario, async (req, res) => {
 
     return res.json({
       mensagem: "Perfil atualizado com sucesso",
-      usuario: data,
+      usuario:  data,
     });
   } catch (error) {
     console.error(error);
-
-    return res.status(500).json({
-      erro: "Erro ao atualizar perfil",
-    });
+    return res.status(500).json({ erro: "Erro ao atualizar perfil" });
   }
 });
+
+// ==========================================================
+// POST /usuarios/logout
+// ==========================================================
 
 router.post("/logout", async (req, res) => {
   try {
@@ -261,25 +270,11 @@ router.post("/logout", async (req, res) => {
     }
 
     res.clearCookie(COOKIE_NAME);
-
-    return res.json({
-      mensagem: "Logout realizado com sucesso",
-    });
+    return res.json({ mensagem: "Logout realizado com sucesso" });
   } catch (error) {
     console.error(error);
-
-    return res.status(500).json({
-      erro: "Erro ao sair da conta",
-    });
+    return res.status(500).json({ erro: "Erro ao sair da conta" });
   }
-});
-
-
-router.get("/sessao", autenticarUsuario, async (req, res) => {
-  return res.json({
-    logado: true,
-    usuario: (req as any).usuario
-  });
 });
 
 export default router;

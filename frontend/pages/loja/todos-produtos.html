@@ -1,39 +1,259 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <title>Todos os Produtos | Lunea</title>
 
-    <link rel="stylesheet" href="/css/todos-produtos.css">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Todos os Produtos | Lunea</title>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/css/todos-produtos.css" />
 </head>
+
 <body>
 
-<section class="produtos-page">
+  <!-- =========================================================
+       HEADER PRINCIPAL
+  ========================================================== -->
+  <header class="header">
+
+    <button class="menu-button" id="menuButton" type="button" aria-label="Abrir menu">
+      <i data-lucide="menu"></i>
+    </button>
+
+    <nav class="nav-left">
+      <a href="/">Página inicial</a>
+      <a href="/todos-produtos.html" class="active btn-ver-todos">Todos os produtos</a>
+      <a href="/#contato">Contato</a>
+      <a href="#">Privacy Policy</a>
+    </nav>
+
+    <a href="/" class="logo">LUNEA</a>
+
+    <div class="header-actions">
+      <button class="search-mobile-button" id="searchMobileButton" type="button" aria-label="Pesquisar">
+        <i data-lucide="search"></i>
+      </button>
+
+      <a href="/perfil" class="user-button" aria-label="Minha conta">
+        <i data-lucide="user"></i>
+      </a>
+
+      <button class="cart-button" id="openCart" type="button" aria-label="Abrir sacola">
+        <i data-lucide="shopping-bag"></i>
+        <span id="cartCount">0</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- PAINEL DE BUSCA MOBILE -->
+  <div class="mobile-search-panel" id="mobileSearchPanel">
+    <div class="mobile-search-box">
+      <input type="text" id="mobileSearchInput" placeholder="Pesquisar produto...">
+      <button id="mobileSearchSubmit" type="button" aria-label="Pesquisar">
+        <i data-lucide="search"></i>
+      </button>
+    </div>
+    <button class="mobile-search-close" id="mobileSearchClose" type="button" aria-label="Fechar busca">
+      <i data-lucide="x"></i>
+    </button>
+  </div>
+
+  <!-- MENU LATERAL MOBILE -->
+  <aside class="mobile-side-menu" id="mobileSideMenu">
+    <div class="mobile-menu-header">
+      <strong>Lunea</strong>
+      <button id="closeMobileMenu" type="button" aria-label="Fechar menu">
+        <i data-lucide="x"></i>
+      </button>
+    </div>
+    <nav class="mobile-menu-links">
+      <a href="/">Início</a>
+      <a href="/todos-produtos.html">Todos os produtos</a>
+      <a href="/#contato">Contato</a>
+    </nav>
+  </aside>
+
+  <div class="menu-overlay" id="menuOverlay"></div>
+
+  <!-- FAIXA FRETE -->
+  <div class="top-announcement">
+    <div class="announcement-track">
+      <span>Frete grátis para todo Brasil</span>
+      <span>Frete grátis para todo Brasil</span>
+      <span>Frete grátis para todo Brasil</span>
+      <span>Frete grátis para todo Brasil</span>
+      <span>Frete grátis para todo Brasil</span>
+      <span>Frete grátis para todo Brasil</span>
+    </div>
+  </div>
+
+  <!-- =========================================================
+       CONTEÚDO PRINCIPAL
+  ========================================================== -->
+  <main class="produtos-page">
 
     <div class="titulo-pagina">
-        <h1>Todos os Produtos</h1>
-        <p>Conheça toda a coleção Lunea.</p>
+      <span>Lunea by Skin</span>
+      <h1>Todos os Produtos</h1>
+      <p>Conheça toda a coleção Lunea.</p>
     </div>
 
+    <!-- BARRA DE FILTROS -->
     <div class="barra-filtros">
-        <input
-            type="text"
-            id="buscarProduto"
-            placeholder="Buscar produto..."
-        >
 
-        <select id="ordenacao">
-            <option value="recentes">Mais recentes</option>
-            <option value="menor-preco">Menor preço</option>
-            <option value="maior-preco">Maior preço</option>
-        </select>
+      <div class="filtro-busca">
+        <i data-lucide="search"></i>
+        <input
+          type="text"
+          id="buscarProduto"
+          placeholder="Buscar produto..."
+          autocomplete="off"
+        >
+      </div>
+
+      <select id="filtroCategoria">
+        <option value="">Todas as categorias</option>
+      </select>
+
+      <select id="filtroColecao">
+        <option value="">Todas as coleções</option>
+      </select>
+
+      <select id="ordenacao">
+        <option value="recentes">Mais recentes</option>
+        <option value="menor-preco">Menor preço</option>
+        <option value="maior-preco">Maior preço</option>
+      </select>
+
+      <button type="button" id="limparFiltros" class="btn-limpar-filtros" style="display:none;">
+        <i data-lucide="x"></i> Limpar filtros
+      </button>
+
     </div>
 
-    <div class="products-grid" id="productsGrid"></div>
+    <!-- RESUMO DOS RESULTADOS -->
+    <div class="resultados-info" id="resultadosInfo">
+      <span id="contadorResultados"></span>
+    </div>
 
-</section>
+    <!-- GRID DE PRODUTOS -->
+    <div class="products-grid editorial-grid marketplace-products-grid" id="productsGrid"></div>
 
-<script src="/js/todos-produtos.js"></script>
+    <!-- ESTADO VAZIO -->
+    <div class="empty-products" id="emptyState" style="display:none;">
+      <i data-lucide="package-search"></i>
+      <h3>Nenhum produto encontrado</h3>
+      <p>Tente ajustar os filtros ou buscar por outro termo.</p>
+      <button type="button" onclick="limparTodosFiltros()">Ver todos os produtos</button>
+    </div>
+
+  </main>
+
+  <!-- =========================================================
+       CARRINHO LATERAL
+  ========================================================== -->
+  <aside class="cart-drawer" id="cartDrawer">
+    <div class="cart-header">
+      <h3>Meu carrinho</h3>
+      <button id="fecharCarrinho" type="button" aria-label="Fechar carrinho">×</button>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-footer">
+      <p>Total: <strong id="cartTotal">R$ 0,00</strong></p>
+      <button id="finalizarPedido" type="button">Finalizar pelo WhatsApp</button>
+    </div>
+  </aside>
+
+  <div class="overlay" id="overlay"></div>
+
+  <div class="toast" id="toast"></div>
+
+  <!-- BOTÃO FLUTUANTE WHATSAPP -->
+  <a href="https://wa.me/5517996489436" class="whatsapp-float" target="_blank" aria-label="Chamar no WhatsApp">
+    💬
+  </a>
+
+  <!-- =========================================================
+       FOOTER
+  ========================================================== -->
+  <footer class="footer">
+    <div class="footer-brand">
+      <h3>Lunea</h3>
+      <p>Produtos escolhidos com carinho para trazer mais beleza, praticidade e bem-estar para o seu dia a dia.</p>
+      <div class="footer-social">
+        <a href="https://instagram.com/seu_perfil" target="_blank" aria-label="Instagram">
+          <i class="fa-brands fa-instagram"></i>
+        </a>
+        <a href="https://facebook.com/sua_pagina" target="_blank" aria-label="Facebook">
+          <i class="fa-brands fa-facebook-f"></i>
+        </a>
+        <a href="https://tiktok.com/@seu_perfil" target="_blank" aria-label="TikTok">
+          <i class="fa-brands fa-tiktok"></i>
+        </a>
+      </div>
+    </div>
+
+    <div class="footer-column">
+      <h4>Institucional</h4>
+      <a href="/">Início</a>
+      <a href="/todos-produtos.html">Produtos</a>
+      <a href="/#sobre">Sobre Nós</a>
+      <a href="/#contato">Contato</a>
+    </div>
+
+    <div class="footer-column">
+      <h4>Ajuda</h4>
+      <a href="#">Perguntas Frequentes</a>
+      <a href="#">Como Comprar</a>
+      <a href="#">Prazo de Entrega</a>
+      <a href="#">Trocas e Devoluções</a>
+    </div>
+
+    <div class="footer-column">
+      <h4>Políticas</h4>
+      <a href="#">Política de Privacidade</a>
+      <a href="#">Política de Reembolso</a>
+      <a href="#">Termos de Uso</a>
+      <a href="#">Política de Cookies</a>
+    </div>
+
+    <div class="footer-column">
+      <h4>Atendimento</h4>
+      <p>✉ contato.luneabyskin@gmail.com</p>
+      <p>Segunda à Sexta<br>08h às 18h</p>
+    </div>
+  </footer>
+
+  <div class="footer-extra">
+    <div class="security-badges">
+      <div class="security-badge">🔒 Compra Segura</div>
+      <div class="security-badge">💳 Pagamento Protegido</div>
+      <div class="security-badge">🚚 Entrega Garantida</div>
+    </div>
+    <div class="payment-title">Formas de pagamento aceitas</div>
+    <div class="payment-methods">
+      <img src="/assets/pagamentos/visa-classic-svgrepo-com.svg" alt="Visa">
+      <img src="/assets/pagamentos/mastercard-svgrepo-com.svg" alt="Mastercard">
+      <img src="/assets/pagamentos/elo-svgrepo-com.svg" alt="Elo">
+      <img src="/assets/pagamentos/hipercard-3-svgrepo-com.svg" alt="Hipercard">
+      <img src="https://cdn.simpleicons.org/discover" alt="Discover">
+      <img src="https://logodownload.org/wp-content/uploads/2020/02/pix-bc-logo.png" alt="Pix">
+    </div>
+    <div class="footer-copy">
+      © 2026 Lunea. Todos os direitos reservados.
+    </div>
+  </div>
+
+  <!-- JS -->
+  <script src="/js/todos-produtos.js"></script>
+
+  <script>
+    lucide.createIcons();
+  </script>
 
 </body>
 </html>

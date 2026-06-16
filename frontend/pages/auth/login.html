@@ -1,47 +1,98 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <title>Login Admin | Lunea</title>
-
-    <link rel="stylesheet" href="/css/login.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Entrar | Lunea</title>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="/css/login.css" />
 </head>
-
 <body>
 
-    <main class="login-page">
-        <section class="login-card">
-            <div class="brand">
-                <h1>Lunea</h1>
-                <p>Acesse o painel administrativo</p>
-            </div>
+  <!-- LADO VISUAL -->
+  <div class="auth-visual">
+    <div class="auth-logo">
+      LUNEA
+      <span>by Skin</span>
+    </div>
 
-            <form id="loginForm">
-                <div class="form-group">
-                    <label>E-mail</label>
-                    <input type="email" id="email" placeholder="digite seu e-mail" required />
-                </div>
+    <div class="auth-visual-copy">
+      <h2>Bem-vinda de volta à Lunea.</h2>
+      <p>
+        Entre na sua conta para continuar explorando produtos
+        escolhidos com cuidado para você.
+      </p>
+    </div>
+  </div>
 
-                <div class="form-group">
-                    <label>Senha</label>
-                    <input type="password" id="senha" placeholder="Digite sua senha" required />
-                </div>
+  <!-- FORMULÁRIO -->
+  <div class="auth-form-side">
+    <div class="auth-form-header">
+      <h1>Entrar na sua conta</h1>
+      <p>Digite seu e-mail e senha para continuar.</p>
+    </div>
 
-                <button type="submit">Entrar</button>
-            </form>
+    <!-- ERRO -->
+    <div class="erro-login" id="erroLogin">
+      <i data-lucide="alert-circle"></i>
+      <span id="erroTexto">E-mail ou senha incorretos.</span>
+    </div>
 
-            <a href="/pages/lunea.html" class="back-link">Voltar para loja</a>
-        </section>
-    </main>
+    <!-- CAMPOS -->
+    <div class="form-group">
+      <label for="email">E-mail</label>
+      <div class="input-wrapper">
+        <i data-lucide="mail"></i>
+        <input
+          type="email"
+          id="email"
+          placeholder="seu@email.com"
+          autocomplete="email"
+        >
+      </div>
+    </div>
 
-    <div class="toast" id="toast"></div>
+    <div class="form-group">
+      <label for="senha">Senha</label>
+      <div class="input-wrapper">
+        <i data-lucide="lock"></i>
+        <input
+          type="password"
+          id="senha"
+          placeholder="••••••••"
+          autocomplete="current-password"
+        >
+        <button
+          type="button"
+          class="toggle-senha"
+          id="toggleSenha"
+          aria-label="Mostrar senha"
+        >
+          <i data-lucide="eye" id="iconeSenha"></i>
+        </button>
+      </div>
+    </div>
 
-    <script src="/js/login.js"></script>
+    <!-- BOTÃO -->
+    <button class="btn-login" id="btnLogin" type="button">
+      <div class="spinner-btn"></div>
+      <span class="btn-texto">Entrar</span>
+    </button>
+
+    <div class="auth-form-footer">
+      Não tem conta?
+      <a href="/cadastro">Cadastre-se gratuitamente</a>
+
+      <br>
+
+      <a href="/" class="voltar-loja">
+        <i data-lucide="arrow-left"></i>
+        Voltar para a loja
+      </a>
+    </div>
+  </div>
+
+  <script src="/js/login.js"></script>
+
 </body>
-
 </html>

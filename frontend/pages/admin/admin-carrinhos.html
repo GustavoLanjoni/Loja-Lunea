@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Carrinhos Abandonados | Admin Lunea</title>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="/css/admin-carrinhos.css" />
+
+</head>
+<body>
+
+<div class="admin-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      LUNEA
+      <span>Painel Admin</span>
+    </div>
+
+    <nav>
+      <a href="/admin"><i data-lucide="layout-dashboard"></i> Dashboard</a>
+      <a href="/admin/produtos"><i data-lucide="package"></i> Produtos</a>
+      <a href="/admin/pedidos"><i data-lucide="shopping-bag"></i> Pedidos</a>
+      <a href="/admin/carrinhos" class="active"><i data-lucide="shopping-cart"></i> Carrinhos</a>
+      <a href="/admin/clientes"><i data-lucide="users"></i> Clientes</a>
+      <a href="/admin/categorias"><i data-lucide="tag"></i> Categorias</a>
+      <a href="/admin/colecoes"><i data-lucide="layers"></i> Coleções</a>
+      <a href="/admin/dicas"><i data-lucide="book-open"></i> Dicas</a>
+    </nav>
+  </aside>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <main class="main-content">
+
+    <div class="page-header">
+      <div>
+        <h1>Carrinhos Abandonados</h1>
+        <p>Usuários que adicionaram produtos mas não finalizaram a compra.</p>
+      </div>
+
+      <button class="btn-atualizar" onclick="carregarCarrinhos()">
+        <i data-lucide="refresh-cw"></i>
+        Atualizar
+      </button>
+    </div>
+
+    <!-- RESUMO -->
+    <div class="resumo-grid" id="resumoGrid">
+      <div class="resumo-card">
+        <div class="label">Total abandonados</div>
+        <div class="valor warn" id="resumoTotal">—</div>
+      </div>
+      <div class="resumo-card">
+        <div class="label">Valor em risco</div>
+        <div class="valor" id="resumoValor">—</div>
+      </div>
+      <div class="resumo-card">
+        <div class="label">Email não enviado</div>
+        <div class="valor warn" id="resumoSemEmail">—</div>
+      </div>
+      <div class="resumo-card">
+        <div class="label">Email já enviado</div>
+        <div class="valor success" id="resumoComEmail">—</div>
+      </div>
+    </div>
+
+    <!-- FILTROS -->
+    <div class="filtros-barra">
+      <input
+        type="text"
+        id="filtroBusca"
+        placeholder="Buscar por nome ou email..."
+        oninput="filtrarCarrinhos()"
+      >
+      <select id="filtroEmail" onchange="filtrarCarrinhos()">
+        <option value="">Todos</option>
+        <option value="nao">Email não enviado</option>
+        <option value="sim">Email enviado</option>
+      </select>
+    </div>
+
+    <!-- LISTA -->
+    <div id="listaCarrinhos">
+      <div class="estado-pagina">
+        <div class="spinner"></div>
+        <p>Carregando carrinhos...</p>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- TOAST -->
+<div class="toast-admin" id="toastAdmin"></div>
+
+<script src="/js/admin-carrinhos.js"></script>
+<script src="/js/admin-guard.js"></script>
+
+</body>
+</html>
