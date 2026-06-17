@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Meu Carrinho | Lunea</title>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/carrinho.css">
+</head>
+<body>
+
+<header class="header">
+  <a href="/" class="logo">LUNEA</a>
+</header>
+
+<section class="cart-page">
+
+  <div class="cart-left">
+
+    <div class="cart-title">
+      <h1>Meu carrinho</h1>
+      <span id="cartCount">0 itens</span>
+    </div>
+
+    <div id="cartItems">
+
+      <div class="cart-loading">
+        Carregando carrinho...
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="cart-right">
+
+    <div class="cart-summary">
+
+      <h2>Resumo do pedido</h2>
+
+      <div class="summary-line">
+        <span>Subtotal</span>
+        <strong id="subtotal">R$ 0,00</strong>
+      </div>
+
+      <div class="summary-line total">
+        <span>Total</span>
+        <strong id="total">R$ 0,00</strong>
+      </div>
+
+      <button id="finalizarPedido" class="btn-checkout">
+        Finalizar pelo WhatsApp
+      </button>
+
+      <a href="/" class="btn-continuar">
+        Continuar comprando
+      </a>
+
+    </div>
+
+  </div>
+
+</section>
+
+<script src="/js/carrinho.js"></script>
+
+<script>
+  lucide.createIcons();
+</script>
+
+</body>
+</html>

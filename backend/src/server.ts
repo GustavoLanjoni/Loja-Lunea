@@ -59,7 +59,7 @@ app.get("/dica", (req, res) => {
   res.sendFile(path.join(__dirname, "../../frontend/pages/loja/dica.html"));
 });
 
-app.get("/carrinho", (req, res) => {
+app.get("/meu-carrinho", (req, res) => {
   res.sendFile(path.join(__dirname, "../../frontend/pages/loja/carrinho.html"));
 });
 

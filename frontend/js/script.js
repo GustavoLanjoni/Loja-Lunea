@@ -46,7 +46,6 @@ const mobileSearchInput = document.getElementById("mobileSearchInput");
 const mobileSearchClose = document.getElementById("mobileSearchClose");
 const mobileSearchSubmit = document.getElementById("mobileSearchSubmit");
 
-let carrinho = [];
 let produtosLoja = [];
 let favoritosIds = new Set();
 
@@ -332,7 +331,7 @@ function renderizarProdutos(listaProdutos, grid = productsGrid) {
         <button 
           type="button"
           class="product-buy-button"
-          onclick="event.stopPropagation(); adicionarAoCarrinho(${produto.id}, '${nomeSeguro}', ${produto.preco})"
+          onclick="event.stopPropagation(); adicionarAoCarrinho(${produto.id})"
         >
           Comprar
         </button>
@@ -505,53 +504,64 @@ function irParaProdutos() {
    CARRINHO
 ========================================================= */
 
-function adicionarAoCarrinho(id, nome, preco) {
-  const itemExistente = carrinho.find((item) => item.id === id);
+async function adicionarAoCarrinho(produtoId) {
 
-  if (itemExistente) {
-    itemExistente.quantidade++;
-  } else {
-    carrinho.push({
-      id,
-      nome,
-      preco: Number(preco),
-      quantidade: 1,
+  try {
+
+    const resposta = await fetch("http://localhost:3000/carrinho/itens", {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        produto_id: produtoId,
+        quantidade: 1
+      })
     });
-  }
 
-  atualizarCarrinho();
-  mostrarToast("Produto adicionado ao carrinho");
+    const dados = await resposta.json();
+
+    if (!resposta.ok) {
+      mostrarToast(dados.erro || "Erro ao adicionar produto");
+      return;
+    }
+
+    mostrarToast("Produto adicionado ao carrinho ✓");
+
+    atualizarContadorCarrinho();
+
+  } catch (erro) {
+    console.error(erro);
+    mostrarToast("Erro de conexão");
+  }
 }
 
-function atualizarCarrinho() {
-  if (!cartItems || !cartCount || !cartTotal) return;
+async function atualizarContadorCarrinho() {
 
-  cartItems.innerHTML = "";
+  try {
 
-  let total = 0;
-  let quantidadeTotal = 0;
+    const resposta = await fetch("http://localhost:3000/carrinho", {
+      credentials: "include"
+    });
 
-  carrinho.forEach((item) => {
-    total += item.preco * item.quantidade;
-    quantidadeTotal += item.quantidade;
+    if (!resposta.ok) return;
 
-    const div = document.createElement("div");
-    div.className = "cart-item";
+    const carrinho = await resposta.json();
 
-    div.innerHTML = `
-      <h4>${item.nome}</h4>
-      <p>Qtd: ${item.quantidade}</p>
-      <p>R$ ${formatarPreco(item.preco * item.quantidade)}</p>
-      <button onclick="removerDoCarrinho(${item.id})">
-        Remover
-      </button>
-    `;
+    const quantidade = carrinho.itens.reduce(
+      (soma, item) => soma + item.quantidade,
+      0
+    );
 
-    cartItems.appendChild(div);
-  });
+    if (cartCount) {
+      cartCount.textContent = quantidade;
+    }
 
-  cartCount.textContent = quantidadeTotal;
-  cartTotal.textContent = `R$ ${formatarPreco(total)}`;
+  } catch (erro) {
+    console.error(erro);
+  }
+
 }
 
 function removerDoCarrinho(id) {
@@ -990,9 +1000,9 @@ async function carregarDicasHome() {
    EVENTOS PRINCIPAIS
 ========================================================= */
 
-if (abrirCarrinho) {
-  abrirCarrinho.addEventListener("click", abrirMenuCarrinho);
-}
+abrirCarrinho.addEventListener("click", () => {
+  window.location.href = "/carrinho";
+});
 
 if (fecharCarrinho) {
   fecharCarrinho.addEventListener("click", fecharMenuCarrinho);
@@ -1017,12 +1027,15 @@ if (searchInput) {
 ========================================================= */
 
 async function iniciarLunea() {
+
   prepararAnimacoesScroll();
   iniciarFaqLunea();
   iniciarControleVideoLunea();
 
   await carregarProdutos();
   await carregarProdutosSelecionados();
+
+  await atualizarContadorCarrinho();
 
   verificarSessao();
   carregarDestaqueHome();
