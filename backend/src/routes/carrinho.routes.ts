@@ -9,8 +9,8 @@ import { supabase } from "../database/supabase";
 const router = Router();
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-const COOKIE_NAME       = "lunea_session";
-const MINUTOS_ABANDONO  = 30;
+const COOKIE_NAME = "lunea_session";
+const MINUTOS_ABANDONO = 30;
 
 // ==========================================================
 // TIPOS
@@ -264,7 +264,7 @@ router.post("/itens", autenticarUsuario, async (req: Request, res: Response) => 
 
 router.patch("/itens/:produto_id", autenticarUsuario, async (req: Request, res: Response) => {
   try {
-    const usuario    = (req as RequestAutenticado).usuario;
+    const usuario = (req as RequestAutenticado).usuario;
     const produto_id = Number(req.params.produto_id);
     const { quantidade } = req.body;
 
@@ -297,7 +297,7 @@ router.patch("/itens/:produto_id", autenticarUsuario, async (req: Request, res: 
 
 router.delete("/itens/:produto_id", autenticarUsuario, async (req: Request, res: Response) => {
   try {
-    const usuario    = (req as RequestAutenticado).usuario;
+    const usuario = (req as RequestAutenticado).usuario;
     const produto_id = Number(req.params.produto_id);
 
     const carrinho_id = await pegarOuCriarCarrinho(usuario.id);
@@ -324,7 +324,7 @@ router.delete("/itens/:produto_id", autenticarUsuario, async (req: Request, res:
 
 router.delete("/", autenticarUsuario, async (req: Request, res: Response) => {
   try {
-    const usuario     = (req as RequestAutenticado).usuario;
+    const usuario = (req as RequestAutenticado).usuario;
     const carrinho_id = await pegarOuCriarCarrinho(usuario.id);
 
     await pool.query(
@@ -440,9 +440,9 @@ router.post("/admin/email/:carrinho_id", autenticarAdmin, async (req: Request, r
       [carrinho_id]
     );
 
-    const nomeCliente  = carrinho.usuario_nome.split(" ")[0];
+    const nomeCliente = carrinho.usuario_nome.split(" ")[0];
     const totalFormatado = Number(carrinho.valor_total).toFixed(2).replace(".", ",");
-    const urlCarrinho  = `${process.env.FRONTEND_URL}/carrinho`;
+    const urlCarrinho = `${process.env.FRONTEND_URL}/carrinho`;
 
     // Monta linhas de itens do email
     const itensHtml = itens.map((item) => `
@@ -452,10 +452,10 @@ router.post("/admin/email/:carrinho_id", autenticarAdmin, async (req: Request, r
             <tr>
               <td style="padding-right:14px; vertical-align:middle;">
                 ${item.imagem_url
-                  ? `<img src="${item.imagem_url}" width="60" height="60"
+        ? `<img src="${item.imagem_url}" width="60" height="60"
                       style="border-radius:8px; object-fit:cover; display:block;">`
-                  : `<div style="width:60px;height:60px;background:#f5f0eb;border-radius:8px;"></div>`
-                }
+        : `<div style="width:60px;height:60px;background:#f5f0eb;border-radius:8px;"></div>`
+      }
               </td>
               <td style="vertical-align:middle;">
                 <strong style="color:#1a1a1a;font-size:14px;">${item.nome}</strong><br>
@@ -593,10 +593,10 @@ router.post("/admin/email/:carrinho_id", autenticarAdmin, async (req: Request, r
 
     // Dispara via Resend
     const { error: resendError } = await resend.emails.send({
-      from:    process.env.EMAIL_FROM || "Lunea <contato@luneabyskin.com.br>",
-      to:      carrinho.usuario_email,
+      from: "Lunea <contato@mail.luneabyskin.com.br>",
+      to: carrinho.usuario_email,
       subject: `${nomeCliente}, seu carrinho está te esperando 🌙`,
-      html:    htmlEmail,
+      html: htmlEmail,
     });
 
     if (resendError) {
@@ -622,7 +622,7 @@ router.post("/admin/email/:carrinho_id", autenticarAdmin, async (req: Request, r
 
     return res.json({
       mensagem: "Email enviado com sucesso",
-      email:    carrinho.usuario_email,
+      email: carrinho.usuario_email,
     });
   } catch (error) {
     console.error("[POST /carrinho/admin/email]", error);
